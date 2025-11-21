@@ -32,13 +32,13 @@ export function EventForm({ event }: { event?: Event }) {
 
     setUploading(true);
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("folder", "events");
+      const uploadFormData = new FormData();
+      uploadFormData.append("file", file);
+      uploadFormData.append("folder", "events");
 
       const response = await fetch("/api/upload", {
         method: "POST",
-        body: formData,
+        body: uploadFormData,
       });
 
       if (!response.ok) {
@@ -46,7 +46,7 @@ export function EventForm({ event }: { event?: Event }) {
       }
 
       const data = await response.json();
-      setFormData({ ...formData, banner_url: data.url });
+      setFormData((prev) => ({ ...prev, banner_url: data.url }));
       toast({
         title: "Image uploaded",
         description: "Banner image uploaded successfully.",
