@@ -1,3 +1,8 @@
+// Note: Next.js 16 deprecates the "middleware" file convention in favor of "proxy"
+// However, Clerk's clerkMiddleware still uses the middleware pattern.
+// This warning is informational and can be safely ignored until Clerk updates their package.
+// The middleware functionality works correctly despite the warning.
+
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isPublicRoute = createRouteMatcher([
