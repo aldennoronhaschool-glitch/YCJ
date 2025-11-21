@@ -6,9 +6,10 @@ import { CompetitionForm } from "@/components/admin/competition-form";
 export default async function EditCompetitionPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const competition = await getCompetitionById(params.id);
+  const { id } = await params;
+  const competition = await getCompetitionById(id);
   const events = await getAllEvents();
 
   if (!competition) {

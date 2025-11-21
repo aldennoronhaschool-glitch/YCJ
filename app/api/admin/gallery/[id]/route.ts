@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const admin = await isAdmin();
@@ -13,7 +13,8 @@ export async function DELETE(
       return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
     }
 
-    await deleteGalleryImage(params.id);
+    const { id } = await params;
+    await deleteGalleryImage(id);
 
     return NextResponse.json({ message: "Image deleted" });
   } catch (error: any) {

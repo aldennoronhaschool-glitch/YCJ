@@ -5,9 +5,10 @@ import { EventForm } from "@/components/admin/event-form";
 export default async function EditEventPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const event = await getEventById(params.id, true);
+  const { id } = await params;
+  const event = await getEventById(id, true);
 
   if (!event) {
     notFound();

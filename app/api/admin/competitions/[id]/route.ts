@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const admin = await isAdmin();
@@ -13,8 +13,9 @@ export async function PATCH(
       return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
     }
 
+    const { id } = await params;
     const body = await request.json();
-    const competition = await updateCompetition(params.id, body);
+    const competition = await updateCompetition(id, body);
 
     return NextResponse.json(competition);
   } catch (error: any) {
@@ -27,7 +28,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const admin = await isAdmin();
@@ -35,7 +36,8 @@ export async function DELETE(
       return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
     }
 
-    await deleteCompetition(params.id);
+    const { id } = await params;
+    await deleteCompetition(id);
 
     return NextResponse.json({ message: "Competition deleted" });
   } catch (error: any) {

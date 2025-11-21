@@ -9,10 +9,11 @@ import { Navbar } from "@/components/navbar";
 export default async function EventDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const event = await getEventById(params.id);
-  const galleryImages = await getGalleryImages(params.id);
+  const { id } = await params;
+  const event = await getEventById(id);
+  const galleryImages = await getGalleryImages(id);
 
   if (!event) {
     notFound();
