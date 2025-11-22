@@ -140,7 +140,7 @@ UPDATE users SET role = 'admin' WHERE email = 'admin@example.com';
 │   └── auth.ts           # Authentication helpers
 ├── supabase/
 │   └── schema.sql        # Database schema
-└── middleware.ts         # Route protection
+└── proxy.ts              # Route protection (proxy)
 ```
 
 ## 🗄️ Database Schema

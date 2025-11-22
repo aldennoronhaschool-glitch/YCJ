@@ -63,9 +63,9 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
 - Check that your Supabase project is active
 - Ensure database tables are created (run `supabase/schema.sql`)
 
-#### Issue 3: Middleware Warning
+#### Issue 3: Middleware/Proxy Warning
 
-**Status:** This is just a warning, not an error. Your deployment will still work.
+**Status:** ✅ Resolved - The project now uses `proxy.ts` instead of `middleware.ts` per Next.js 16 conventions.
 
 #### Issue 4: Build Timeout
 
