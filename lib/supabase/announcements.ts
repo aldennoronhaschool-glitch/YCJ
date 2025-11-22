@@ -1,4 +1,5 @@
 import { createClient } from "./server";
+import { createAdminClient } from "./admin";
 
 export interface Announcement {
   id: string;
@@ -39,7 +40,7 @@ export async function getAllAnnouncements(): Promise<Announcement[]> {
 }
 
 export async function createAnnouncement(announcement: Omit<Announcement, "id" | "created_at">) {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("announcements")
     .insert([announcement])
@@ -54,7 +55,7 @@ export async function createAnnouncement(announcement: Omit<Announcement, "id" |
 }
 
 export async function updateAnnouncement(id: string, announcement: Partial<Announcement>) {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("announcements")
     .update(announcement)
@@ -70,7 +71,7 @@ export async function updateAnnouncement(id: string, announcement: Partial<Annou
 }
 
 export async function deleteAnnouncement(id: string) {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { error } = await supabase.from("announcements").delete().eq("id", id);
 
   if (error) {

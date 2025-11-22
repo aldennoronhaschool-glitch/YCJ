@@ -46,7 +46,9 @@ export function OfficeBearersManager({ initialBearers }: OfficeBearersManagerPro
       });
 
       if (!response.ok) {
-        throw new Error("Upload failed");
+        const errorData = await response.json().catch(() => ({ message: "Upload failed" }));
+        console.error("Upload error:", errorData);
+        throw new Error(errorData.message || `Upload failed (${response.status})`);
       }
 
       const data = await response.json();
@@ -96,8 +98,22 @@ export function OfficeBearersManager({ initialBearers }: OfficeBearersManagerPro
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to create office bearer");
+        let errorMessage = `Failed to create office bearer (${response.status})`;
+        try {
+          const errorData = await response.json();
+          console.error("Create office bearer error:", errorData);
+          errorMessage = errorData.message || errorData.error || errorMessage;
+        } catch (parseError) {
+          // If response is not JSON, try to get text
+          try {
+            const textError = await response.text();
+            console.error("Create office bearer error (text):", textError);
+            errorMessage = textError || errorMessage;
+          } catch (textError) {
+            console.error("Create office bearer error (unknown):", response.status, response.statusText);
+          }
+        }
+        throw new Error(errorMessage);
       }
 
       const created = await response.json();
@@ -108,10 +124,15 @@ export function OfficeBearersManager({ initialBearers }: OfficeBearersManagerPro
         title: "Office bearer added",
         description: "New office bearer has been added successfully.",
       });
+
+      router.refresh();
     } catch (error: any) {
+      console.error("Create office bearer error (catch):", error);
+      const errorMessage = error?.message || error?.toString() || "Unknown error occurred";
+      console.error("Error message:", errorMessage);
       toast({
         title: "Error",
-        description: error.message,
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {

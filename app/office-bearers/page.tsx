@@ -8,7 +8,7 @@ export default async function OfficeBearersPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className="min-h-screen bg-white py-12 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
             <h1 className="text-4xl font-bold text-gray-900 mb-2">
@@ -30,7 +30,7 @@ export default async function OfficeBearersPage() {
               {bearers.map((bearer) => (
                 <div
                   key={bearer.id}
-                  className="bg-white rounded-lg shadow-sm p-6 flex flex-col items-center text-center"
+                  className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition-shadow border border-gray-200"
                 >
                   <div className="w-24 h-24 rounded-full overflow-hidden mb-4 bg-gray-100">
                     {bearer.photo_url ? (

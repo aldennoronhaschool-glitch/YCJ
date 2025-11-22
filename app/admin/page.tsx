@@ -32,7 +32,7 @@ export default async function AdminDashboard() {
   const competitions = await getAllCompetitions();
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
+    <div className="min-h-screen bg-white py-12 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
@@ -40,7 +40,7 @@ export default async function AdminDashboard() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
+          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Events</CardTitle>
               <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -51,7 +51,7 @@ export default async function AdminDashboard() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Competitions</CardTitle>
               <Trophy className="h-4 w-4 text-muted-foreground" />
@@ -62,7 +62,7 @@ export default async function AdminDashboard() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Registrations</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
@@ -73,7 +73,7 @@ export default async function AdminDashboard() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Gallery</CardTitle>
               <ImageIcon className="h-4 w-4 text-muted-foreground" />
@@ -86,7 +86,7 @@ export default async function AdminDashboard() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <Card>
+          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle>Office Bearers</CardTitle>
               <CardDescription>Manage names, roles, and photos of office bearers</CardDescription>
@@ -98,10 +98,10 @@ export default async function AdminDashboard() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle>Homepage Settings</CardTitle>
-              <CardDescription>Edit background images, hero text, and homepage content</CardDescription>
+              <CardDescription>Edit background images, hero text, service times, welcome note, and contact info</CardDescription>
             </CardHeader>
             <CardContent>
               <Button asChild className="w-full">
@@ -110,7 +110,19 @@ export default async function AdminDashboard() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle>Announcements</CardTitle>
+              <CardDescription>Create, edit, and manage announcements displayed on the homepage</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button asChild className="w-full">
+                <Link href="/admin/announcements">Manage Announcements</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle>Event Management</CardTitle>
               <CardDescription>Create, update, and manage events</CardDescription>
@@ -122,7 +134,7 @@ export default async function AdminDashboard() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle>Gallery Management</CardTitle>
               <CardDescription>Upload and manage event photos</CardDescription>
@@ -134,7 +146,7 @@ export default async function AdminDashboard() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle>Competition Management</CardTitle>
               <CardDescription>Create and manage competitions</CardDescription>
@@ -146,7 +158,7 @@ export default async function AdminDashboard() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle>Registrations</CardTitle>
               <CardDescription>View and manage competition registrations</CardDescription>

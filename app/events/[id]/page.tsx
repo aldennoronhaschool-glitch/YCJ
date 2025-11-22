@@ -22,10 +22,10 @@ export default async function EventDetailPage({
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className="min-h-screen bg-white py-12 px-4">
       <div className="max-w-4xl mx-auto">
         {event.banner_url && (
-          <div className="relative h-96 w-full rounded-lg overflow-hidden mb-8">
+          <div className="relative h-96 w-full rounded-lg overflow-hidden mb-8 shadow-md">
             <Image
               src={event.banner_url}
               alt={event.title}
@@ -35,7 +35,7 @@ export default async function EventDetailPage({
           </div>
         )}
 
-        <div className="bg-white rounded-lg shadow-sm p-8 mb-8">
+        <div className="bg-white rounded-lg shadow-md p-8 mb-8 border border-gray-200">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">{event.title}</h1>
           
           <div className="flex flex-wrap gap-4 mb-6 text-gray-600">
@@ -61,21 +61,21 @@ export default async function EventDetailPage({
           </div>
 
           <div className="prose max-w-none">
-            <p className="text-gray-700 whitespace-pre-line">{event.description}</p>
+            <p className="text-gray-700 whitespace-pre-line leading-relaxed">{event.description}</p>
           </div>
         </div>
 
         {galleryImages.length > 0 && (
-          <div className="bg-white rounded-lg shadow-sm p-8">
+          <div className="bg-white rounded-lg shadow-md p-8 border border-gray-200">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Event Gallery</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {galleryImages.map((image) => (
-                <div key={image.id} className="relative aspect-square rounded-lg overflow-hidden">
+                <div key={image.id} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer">
                   <Image
                     src={image.image_url}
                     alt="Event photo"
                     fill
-                    className="object-cover hover:scale-105 transition-transform cursor-pointer"
+                    className="object-cover hover:scale-105 transition-transform"
                   />
                 </div>
               ))}

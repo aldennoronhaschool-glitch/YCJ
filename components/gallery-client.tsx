@@ -21,7 +21,7 @@ export function GalleryClient({
       : images.filter((img) => img.event_id === selectedEvent);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
+    <div className="min-h-screen bg-white py-12 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Gallery</h1>
@@ -32,7 +32,7 @@ export function GalleryClient({
           <Select
             value={selectedEvent}
             onChange={(e) => setSelectedEvent(e.target.value)}
-            className="w-64"
+            className="w-64 bg-white border-gray-300"
           >
             <option value="all">All Events</option>
             {events.map((event) => (
@@ -52,7 +52,7 @@ export function GalleryClient({
             {filteredImages.map((image) => (
               <div
                 key={image.id}
-                className="relative mb-4 break-inside-avoid rounded-lg overflow-hidden group cursor-pointer"
+                className="relative mb-4 break-inside-avoid rounded-lg overflow-hidden group cursor-pointer border border-gray-200 hover:shadow-lg transition-shadow"
               >
                 <div className="relative aspect-auto">
                   <Image

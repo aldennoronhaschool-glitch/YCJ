@@ -7,9 +7,9 @@ export default async function AdminGalleryPage() {
   const events = await getAllEvents();
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
+    <div className="min-h-screen bg-background py-12 px-4">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">Gallery Management</h1>
+        <h1 className="text-5xl font-bold mb-8 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">Gallery Management</h1>
         <GalleryManager initialImages={images} events={events} />
       </div>
     </div>

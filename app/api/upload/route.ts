@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { isAdmin } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -19,7 +19,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "No file provided" }, { status: 400 });
     }
 
-    const supabase = await createClient();
+    // Use admin client to bypass RLS for storage operations
+    const supabase = createAdminClient();
     const fileExt = file.name.split(".").pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
     const filePath = `${folder}/${fileName}`;

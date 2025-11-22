@@ -75,10 +75,10 @@ export function RegistrationForm({ competitions }: { competitions: Competition[]
 
   if (!isSignedIn) {
     return (
-      <Card>
+      <Card className="border border-gray-200 shadow-md">
         <CardHeader>
-          <CardTitle>Sign In Required</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-gray-900">Sign In Required</CardTitle>
+          <CardDescription className="text-gray-600">
             Please sign in to register for competitions.
           </CardDescription>
         </CardHeader>
@@ -92,10 +92,10 @@ export function RegistrationForm({ competitions }: { competitions: Competition[]
   }
 
   return (
-    <Card>
+    <Card className="border border-gray-200 shadow-md">
       <CardHeader>
-        <CardTitle>Competition Registration</CardTitle>
-        <CardDescription>Fill in your details to register</CardDescription>
+        <CardTitle className="text-gray-900 text-2xl">Competition Registration</CardTitle>
+        <CardDescription className="text-gray-600">Fill in your details to register</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">

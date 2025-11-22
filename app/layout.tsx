@@ -10,6 +10,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "YCJ - Youth of Christha Jyothi",
   description: "CSI Christha Jyothi Church Youth Community",
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

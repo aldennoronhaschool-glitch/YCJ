@@ -10,12 +10,12 @@ export default async function AdminCompetitionsPage() {
   const events = await getAllEvents();
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
+    <div className="min-h-screen bg-background py-12 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Competition Management</h1>
-            <p className="text-gray-600">Create and manage competitions</p>
+            <h1 className="text-5xl font-bold mb-3 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">Competition Management</h1>
+            <p className="text-muted-foreground text-lg">Create and manage competitions</p>
           </div>
           <Button asChild>
             <Link href="/admin/competitions/new">

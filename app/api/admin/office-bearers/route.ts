@@ -23,17 +23,20 @@ export async function POST(request: Request) {
     }
 
     const bearer = await createOfficeBearer({
-      name,
-      role,
+      name: name.trim(),
+      role: role.trim(),
       photo_url: photo_url || null,
-      order_index: 0,
-      created_at: new Date().toISOString(),
-    } as any);
+    });
 
     return NextResponse.json(bearer, { status: 201 });
   } catch (error: any) {
+    console.error("Error in POST /api/admin/office-bearers:", error);
     return NextResponse.json(
-      { message: error.message || "Internal server error" },
+      { 
+        message: error.message || "Internal server error",
+        error: error.toString(),
+        stack: process.env.NODE_ENV === "development" ? error.stack : undefined
+      },
       { status: 500 }
     );
   }

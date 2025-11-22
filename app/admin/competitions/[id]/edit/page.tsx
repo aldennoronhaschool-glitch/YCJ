@@ -17,9 +17,9 @@ export default async function EditCompetitionPage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
+    <div className="min-h-screen bg-background py-12 px-4">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">Edit Competition</h1>
+        <h1 className="text-5xl font-bold mb-8 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">Edit Competition</h1>
         <CompetitionForm competition={competition} events={events} />
       </div>
     </div>

@@ -12,7 +12,7 @@ export default async function EventsPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className="min-h-screen bg-white py-12 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Upcoming Events</h1>
@@ -26,7 +26,7 @@ export default async function EventsPage() {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event) => (
-              <Card key={event.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+              <Card key={event.id} className="overflow-hidden hover:shadow-lg transition-shadow border border-gray-200">
                 {event.banner_url && (
                   <div className="relative h-48 w-full">
                     <Image
@@ -48,8 +48,8 @@ export default async function EventsPage() {
                       <span>{event.time}</span>
                     </div>
                   </div>
-                  <CardTitle className="text-xl">{event.title}</CardTitle>
-                  <CardDescription className="line-clamp-3">
+                  <CardTitle className="text-xl text-gray-900">{event.title}</CardTitle>
+                  <CardDescription className="line-clamp-3 text-gray-600">
                     {event.description}
                   </CardDescription>
                   {event.location && (

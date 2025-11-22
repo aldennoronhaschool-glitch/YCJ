@@ -1,4 +1,5 @@
 import { createClient } from "./server";
+import { createAdminClient } from "./admin";
 
 export interface OfficeBearer {
   id: string;
@@ -41,15 +42,55 @@ export async function getOfficeBearers(): Promise<OfficeBearer[]> {
 export async function createOfficeBearer(
   bearer: Omit<OfficeBearer, "id" | "created_at">
 ) {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS
+  let supabase;
+  try {
+    supabase = createAdminClient();
+  } catch (clientError: any) {
+    console.error("Error creating admin client:", clientError);
+    throw new Error(
+      `Failed to create admin client: ${clientError.message}. Make sure SUPABASE_SERVICE_ROLE_KEY is set in your environment variables.`
+    );
+  }
+  
+  // Get the max order_index to place new bearer at the end
+  const { data: existing, error: orderError } = await supabase
+    .from("office_bearers")
+    .select("order_index")
+    .order("order_index", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  
+  // If table doesn't exist or no data, start at 0
+  const maxOrder = orderError || !existing ? -1 : (existing.order_index ?? -1);
+  const newOrderIndex = maxOrder + 1;
+  
   const { data, error } = await supabase
     .from("office_bearers")
-    .insert([bearer])
+    .insert([{
+      ...bearer,
+      order_index: bearer.order_index ?? newOrderIndex,
+    }])
     .select()
     .single();
 
   if (error) {
-    throw new Error(error.message);
+    console.error("Error creating office bearer:", {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      error: error,
+    });
+    throw new Error(
+      error.message || 
+      error.details || 
+      `Failed to create office bearer: ${error.code || "Unknown error"}`
+    );
+  }
+
+  if (!data) {
+    throw new Error("Office bearer created but no data returned");
   }
 
   return data;
@@ -59,7 +100,8 @@ export async function updateOfficeBearer(
   id: string,
   bearer: Partial<Omit<OfficeBearer, "id" | "created_at">>
 ) {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("office_bearers")
     .update(bearer)
@@ -68,21 +110,24 @@ export async function updateOfficeBearer(
     .single();
 
   if (error) {
-    throw new Error(error.message);
+    console.error("Error updating office bearer:", error);
+    throw new Error(error.message || "Failed to update office bearer");
   }
 
   return data;
 }
 
 export async function deleteOfficeBearer(id: string) {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS
+  const supabase = createAdminClient();
   const { error } = await supabase
     .from("office_bearers")
     .delete()
     .eq("id", id);
 
   if (error) {
-    throw new Error(error.message);
+    console.error("Error deleting office bearer:", error);
+    throw new Error(error.message || "Failed to delete office bearer");
   }
 }
 
