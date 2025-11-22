@@ -40,7 +40,7 @@ export async function getOfficeBearers(): Promise<OfficeBearer[]> {
 }
 
 export async function createOfficeBearer(
-  bearer: Omit<OfficeBearer, "id" | "created_at">
+  bearer: Omit<OfficeBearer, "id" | "created_at" | "order_index"> & { order_index?: number }
 ) {
   // Use admin client to bypass RLS
   let supabase;
