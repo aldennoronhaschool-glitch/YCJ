@@ -10,10 +10,10 @@ const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-montserrat
 
 export const metadata: Metadata = {
   title: "YCJ - Youth of Christha Jyothi",
-  description: "CSI Christha Jyothi Church Youth Community",
+  description: "CSI Christa Jyothi Church Youth Community",
   icons: {
-    icon: "/icon.svg",
-    apple: "/icon.svg",
+    icon: "/ycj-logo.png",
+    apple: "/ycj-logo.png",
   },
 };
 
@@ -40,4 +40,3 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
-
