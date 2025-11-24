@@ -2,6 +2,8 @@ import { Navbar } from "@/components/navbar";
 import { getAboutSections } from "@/lib/supabase/about";
 import Image from "next/image";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AboutPage() {
     let sections = await getAboutSections();
 
