@@ -56,16 +56,20 @@ export function OfficeBearersManager({ initialBearers }: OfficeBearersManagerPro
       if (target === "new") {
         setNewBearer({ ...newBearer, photo_url: data.url });
       } else {
+        // Update local state
         setBearers((prev) =>
           prev.map((b) =>
             b.id === target ? { ...b, photo_url: data.url } : b
           )
         );
+
+        // Automatically save to database
+        await handleUpdate(target, { photo_url: data.url });
       }
 
       toast({
         title: "Image uploaded",
-        description: "Photo uploaded successfully.",
+        description: "Photo uploaded and saved successfully.",
       });
     } catch (error: any) {
       toast({
