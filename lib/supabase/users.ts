@@ -1,4 +1,4 @@
-import { createClient } from "./server";
+import { createAdminClient } from "./admin";
 import { currentUser } from "@clerk/nextjs/server";
 
 export interface User {
@@ -8,7 +8,8 @@ export interface User {
 }
 
 export async function getUserRole(userId: string): Promise<"user" | "admin" | null> {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("users")
     .select("role")
@@ -29,7 +30,7 @@ export async function getUserRole(userId: string): Promise<"user" | "admin" | nu
           console.log("Could not fetch email from Clerk, using placeholder");
         }
 
-        // Create user with default role
+        // Create user with default role using admin client
         const { data: newUser, error: createError } = await supabase
           .from("users")
           .insert({ id: userId, email: email || `user_${userId}@placeholder.com`, role: "user" })
@@ -66,7 +67,7 @@ export async function getUserRole(userId: string): Promise<"user" | "admin" | nu
 }
 
 export async function setUserRole(userId: string, role: "user" | "admin") {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("users")
     .upsert({ id: userId, role }, { onConflict: "id" })
@@ -81,7 +82,7 @@ export async function setUserRole(userId: string, role: "user" | "admin") {
 }
 
 export async function createOrUpdateUser(userId: string, email: string, role: "user" | "admin" = "user") {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("users")
     .upsert({ id: userId, email, role }, { onConflict: "id" })

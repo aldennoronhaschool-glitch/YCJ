@@ -10,7 +10,7 @@ const isPublicRoute = createRouteMatcher([
   "/gallery",
   "/register",
   "/api/webhooks(.*)",
-  "/admin/login",
+  "/admin/login(.*)",
 ]);
 
 const isApiRoute = createRouteMatcher([
@@ -22,7 +22,7 @@ export default clerkMiddleware(async (auth, request) => {
   if (isApiRoute(request)) {
     return;
   }
-  
+
   // Only protect non-public routes
   if (!isPublicRoute(request)) {
     await auth.protect();

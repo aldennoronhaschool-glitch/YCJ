@@ -41,8 +41,8 @@ God has been gracious and we are here not by our strength but by His faithfulnes
     contact_phone_hours: "Tuesday to Sunday",
     contact_office_hours: "10:00am to 6:00pm",
     contact_office_days: "Tuesday to Sunday",
-    contact_address_line1: "CSI Christha Jyothi Church",
-    contact_address_line2: "Bangalore, Karnataka",
+    contact_address_line1: "CSI Christa Jyothi Church",
+    contact_address_line2: "Bima Nagar, Bailoor, Udupi, Karnataka 576101",
     // Social Media
     social_facebook: "",
     social_instagram: "",
@@ -59,23 +59,23 @@ God has been gracious and we are here not by our strength but by His faithfulnes
     // If there's an error (table doesn't exist, RLS issue, etc.), return defaults silently
     if (error) {
       // Check if it's a "table doesn't exist" error
-      const isTableMissing = 
-        error.code === "42P01" || 
+      const isTableMissing =
+        error.code === "42P01" ||
         error.code === "PGRST116" ||
         error.message?.includes("does not exist") ||
         error.message?.includes("relation") ||
         error.message?.includes("permission denied") ||
         error.message?.includes("Could not find the table") ||
         error.message?.includes("schema cache");
-      
+
       // Silently return defaults for missing table - no error logging
       if (isTableMissing) {
         return defaultSettings;
       }
-      
+
       // Only log unexpected errors
       console.error("Error fetching homepage settings:", error.message || error);
-      
+
       // Return defaults on any error
       return defaultSettings;
     }

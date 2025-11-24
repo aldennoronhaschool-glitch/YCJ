@@ -46,8 +46,8 @@ God has been gracious and we are here not by our strength but by His faithfulnes
     contact_phone_hours: initialSettings.contact_phone_hours || "Tuesday to Sunday",
     contact_office_hours: initialSettings.contact_office_hours || "10:00am to 6:00pm",
     contact_office_days: initialSettings.contact_office_days || "Tuesday to Sunday",
-    contact_address_line1: initialSettings.contact_address_line1 || "CSI Christha Jyothi Church",
-    contact_address_line2: initialSettings.contact_address_line2 || "Bangalore, Karnataka",
+    contact_address_line1: initialSettings.contact_address_line1 || "CSI Christa Jyothi Church",
+    contact_address_line2: initialSettings.contact_address_line2 || "Bima Nagar, Bailoor, Udupi, Karnataka 576101",
     // Social Media
     social_facebook: initialSettings.social_facebook || "",
     social_instagram: initialSettings.social_instagram || "",
