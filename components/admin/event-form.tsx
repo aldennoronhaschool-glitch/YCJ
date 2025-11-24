@@ -16,6 +16,7 @@ export function EventForm({ event }: { event?: Event }) {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [showLightbox, setShowLightbox] = useState(false);
   const [formData, setFormData] = useState({
     title: event?.title || "",
     description: event?.description || "",
@@ -163,12 +164,18 @@ export function EventForm({ event }: { event?: Event }) {
             <Label htmlFor="banner">Banner Image</Label>
             <div className="space-y-2">
               {formData.banner_url && (
-                <div className="relative w-full h-48 rounded-lg overflow-hidden border">
+                <div
+                  className="relative w-full rounded-lg overflow-hidden border bg-gray-100 cursor-pointer hover:opacity-90 transition-opacity"
+                  onClick={() => setShowLightbox(true)}
+                >
                   <img
                     src={formData.banner_url}
                     alt="Banner preview"
-                    className="w-full h-full object-cover"
+                    className="w-full h-auto object-contain max-h-96"
                   />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 bg-black/20 transition-opacity">
+                    <p className="text-white text-sm bg-black/50 px-3 py-1 rounded">Click to view full size</p>
+                  </div>
                 </div>
               )}
               <div className="flex items-center gap-2">
@@ -216,6 +223,27 @@ export function EventForm({ event }: { event?: Event }) {
           </div>
         </form>
       </CardContent>
+
+      {/* Lightbox Modal */}
+      {showLightbox && formData.banner_url && (
+        <div
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowLightbox(false)}
+        >
+          <button
+            onClick={() => setShowLightbox(false)}
+            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors text-4xl"
+          >
+            ×
+          </button>
+          <img
+            src={formData.banner_url}
+            alt="Banner full size"
+            className="max-w-full max-h-full object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </Card>
   );
 }

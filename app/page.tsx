@@ -14,7 +14,20 @@ export default async function HomePage() {
   const events = await getLatestEvents(3);
   const announcements = await getAnnouncements(5);
   const settings = await getHomepageSettings();
-  const recentGalleryFolders = await getRecentGalleryFolders(4);
+
+  // Fetch recent gallery folders from ImageKit
+  let recentGalleryFolders: any[] = [];
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/imagekit/recent-folders?limit=4`, {
+      cache: 'no-store'
+    });
+    if (response.ok) {
+      const data = await response.json();
+      recentGalleryFolders = data.folders || [];
+    }
+  } catch (error) {
+    console.error("Error fetching gallery folders:", error);
+  }
 
   const heroTitle = settings.hero_title || "Youth of Christha Jyothi";
   const heroSubtitle = settings.hero_subtitle || "CSI Christha Jyothi Church - Building a vibrant community of faith, fellowship, and service";
@@ -162,7 +175,7 @@ export default async function HomePage() {
                 {recentGalleryFolders.map((folder) => (
                   <Link
                     key={folder.id}
-                    href={folder.type === 'event' ? `/gallery?event=${folder.id}` : `/gallery?folder=${encodeURIComponent(folder.name)}`}
+                    href="/gallery"
                     className="group block"
                   >
                     <div className="relative h-64 w-full overflow-hidden rounded-lg shadow-md">

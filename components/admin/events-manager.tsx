@@ -11,6 +11,7 @@ import Link from "next/link";
 
 export function EventsManager({ initialEvents }: { initialEvents: Event[] }) {
   const [events, setEvents] = useState(initialEvents);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -82,8 +83,8 @@ export function EventsManager({ initialEvents }: { initialEvents: Event[] }) {
           {events.map((event) => (
             <Card key={event.id}>
               <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div>
+                <div className="flex justify-between items-start gap-4">
+                  <div className="flex-1">
                     <CardTitle className="flex items-center gap-2">
                       {event.title}
                       {!event.published && (
@@ -125,6 +126,18 @@ export function EventsManager({ initialEvents }: { initialEvents: Event[] }) {
                 </div>
               </CardHeader>
               <CardContent>
+                {event.banner_url && (
+                  <div
+                    className="mb-4 rounded-lg overflow-hidden border cursor-pointer hover:opacity-90 transition-opacity"
+                    onClick={() => setLightboxImage(event.banner_url!)}
+                  >
+                    <img
+                      src={event.banner_url}
+                      alt={event.title}
+                      className="w-full h-48 object-cover"
+                    />
+                  </div>
+                )}
                 <p className="text-sm text-gray-600 line-clamp-2">{event.description}</p>
                 {event.location && (
                   <p className="text-sm text-gray-500 mt-2">📍 {event.location}</p>
@@ -132,6 +145,27 @@ export function EventsManager({ initialEvents }: { initialEvents: Event[] }) {
               </CardContent>
             </Card>
           ))}
+        </div>
+      )}
+
+      {/* Lightbox Modal */}
+      {lightboxImage && (
+        <div
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+          onClick={() => setLightboxImage(null)}
+        >
+          <button
+            onClick={() => setLightboxImage(null)}
+            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors text-4xl"
+          >
+            ×
+          </button>
+          <img
+            src={lightboxImage}
+            alt="Event banner"
+            className="max-w-full max-h-full object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
         </div>
       )}
     </div>

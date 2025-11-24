@@ -35,12 +35,27 @@ export async function POST(request: Request) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
+    // Determine folder path
+    let folderPath = folder || "uploads";
+    if (folder === "gallery") {
+      if (customEventName) {
+        folderPath = `gallery/${customEventName}`;
+      } else if (eventId) {
+        // You might want to fetch the event name here for better folder names
+        folderPath = `gallery/event-${eventId}`;
+      } else {
+        folderPath = "gallery/uncategorized";
+      }
+    }
+
+    console.log("Uploading to ImageKit folder:", folderPath);
+
     // Upload to ImageKit
     const uploadResponse = await new Promise((resolve, reject) => {
       imagekit.upload({
         file: buffer,
         fileName: file.name,
-        folder: folder || "uploads", // Organize in ImageKit folders
+        folder: folderPath,
       }, (error, result) => {
         if (error) reject(error);
         else resolve(result);

@@ -1,17 +1,13 @@
-import { getGalleryImages } from "@/lib/supabase/gallery";
-import { getAllEvents } from "@/lib/supabase/events";
-import { GalleryClient } from "@/components/gallery-client";
+import { GalleryViewImageKit } from "@/components/gallery-view-imagekit";
 import { Navbar } from "@/components/navbar";
 
-export default async function GalleryPage() {
-  const allImages = await getGalleryImages();
-  const events = await getAllEvents();
+export const dynamic = 'force-dynamic';
 
+export default async function GalleryPage() {
   return (
     <>
       <Navbar />
-      <GalleryClient images={allImages} events={events} />
+      <GalleryViewImageKit />
     </>
   );
 }
-
