@@ -7,7 +7,7 @@ interface LogoProps {
   showText?: boolean;
 }
 
-export function Logo({ className = "", size = 40, showText = true }: LogoProps) {
+export function Logo({ className = "", size = 150, showText = true }: LogoProps) {
   return (
     <div className={`flex items-center ${className}`}>
       <Image

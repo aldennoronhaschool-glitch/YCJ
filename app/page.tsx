@@ -5,6 +5,7 @@ import { Calendar, Users, Image as ImageIcon, Trophy, Clock, MapPin, Mail, Phone
 import { getLatestEvents } from "@/lib/supabase/events";
 import { getAnnouncements } from "@/lib/supabase/announcements";
 import { getHomepageSettings } from "@/lib/supabase/homepage";
+import { getRecentGalleryFolders } from "@/lib/supabase/gallery";
 import { Navbar } from "@/components/navbar";
 import { Logo } from "@/components/logo";
 import Image from "next/image";
@@ -13,6 +14,7 @@ export default async function HomePage() {
   const events = await getLatestEvents(3);
   const announcements = await getAnnouncements(5);
   const settings = await getHomepageSettings();
+  const recentGalleryFolders = await getRecentGalleryFolders(4);
 
   const heroTitle = settings.hero_title || "Youth of Christha Jyothi";
   const heroSubtitle = settings.hero_subtitle || "CSI Christha Jyothi Church - Building a vibrant community of faith, fellowship, and service";
@@ -24,7 +26,7 @@ export default async function HomePage() {
       <Navbar />
       <div className="min-h-screen bg-white">
         {/* Hero Section with Church Name */}
-        <section className={`relative pt-32 pb-16 px-4 ${heroBackgroundImage ? '' : 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50'}`}>
+        <section className={`relative min-h-[60vh] flex items-center pt-32 pb-16 px-4 ${heroBackgroundImage ? '' : 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50'}`}>
           {heroBackgroundImage && (
             <div className="absolute inset-0 z-0">
               <Image
@@ -38,11 +40,7 @@ export default async function HomePage() {
             </div>
           )}
           <div className="relative z-10 max-w-7xl mx-auto text-center">
-            <div className="mb-6">
-              <div className="inline-flex items-center justify-center mb-4">
-                <Logo size={80} showText={false} />
-              </div>
-            </div>
+
             <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gray-900">
               {heroTitle}
             </h1>
@@ -152,6 +150,45 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+
+        {/* Recent Gallery Updates */}
+        {recentGalleryFolders.length > 0 && (
+          <section className="py-16 px-4 bg-gray-50">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">RECENT GALLERY UPDATES</h2>
+              </div>
+              <div className="grid md:grid-cols-4 gap-6">
+                {recentGalleryFolders.map((folder) => (
+                  <Link
+                    key={folder.id}
+                    href={folder.type === 'event' ? `/gallery?event=${folder.id}` : `/gallery?folder=${encodeURIComponent(folder.name)}`}
+                    className="group block"
+                  >
+                    <div className="relative h-64 w-full overflow-hidden rounded-lg shadow-md">
+                      <Image
+                        src={folder.coverImage}
+                        alt={folder.name}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90" />
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                        <h3 className="text-lg font-bold mb-1 line-clamp-1">{folder.name}</h3>
+                        <p className="text-sm text-white/80">{folder.count} Photos</p>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+              <div className="text-center mt-8">
+                <Button asChild variant="outline">
+                  <Link href="/gallery">View Full Gallery</Link>
+                </Button>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Quick Links Section */}
         <section className="py-16 px-4 bg-gray-50">

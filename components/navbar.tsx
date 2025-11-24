@@ -7,11 +7,13 @@ import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
+import { createClient } from "@supabase/supabase-js";
 
 export function Navbar() {
   const { isSignedIn, user } = useUser();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +22,33 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    async function checkAdminStatus() {
+      if (!user?.id) return;
+
+      try {
+        // We need to fetch the role from our public API or use a server action
+        // For client-side, we'll use a direct Supabase query if we have the client available
+        // Or better, we can check the user's metadata if we synced it
+
+        // For now, let's fetch from our API endpoint to be safe and secure
+        const response = await fetch('/api/user/role');
+        if (response.ok) {
+          const data = await response.json();
+          setIsAdmin(data.role === 'admin');
+        }
+      } catch (error) {
+        console.error("Failed to check admin status", error);
+      }
+    }
+
+    if (isSignedIn) {
+      checkAdminStatus();
+    } else {
+      setIsAdmin(false);
+    }
+  }, [isSignedIn, user]);
 
   const navLinks = [
     { name: "HOME", href: "/" },
@@ -40,7 +69,7 @@ export function Navbar() {
       <div className="container flex items-center justify-between px-4 md:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <Logo size={scrolled ? 50 : 60} showText={false} />
+          <Logo size={scrolled ? 150 : 180} showText={false} />
         </Link>
 
         {/* Desktop Navigation */}
@@ -113,7 +142,7 @@ export function Navbar() {
             );
           })}
 
-          {isSignedIn && (
+          {isSignedIn && isAdmin && (
             <Link
               href="/admin"
               className="text-[13px] font-bold text-gray-900 hover:text-bethel-red transition-colors uppercase tracking-[0.15em]"
@@ -123,8 +152,14 @@ export function Navbar() {
           )}
 
           {/* Auth Button */}
-          {isSignedIn && (
+          {isSignedIn ? (
             <UserButton afterSignOutUrl="/" />
+          ) : (
+            <SignInButton mode="modal">
+              <Button className="bg-bethel-red hover:bg-[#b93f1f] text-white font-bold uppercase tracking-wider text-xs h-8 px-4">
+                Sign In
+              </Button>
+            </SignInButton>
           )}
         </div>
 
@@ -152,7 +187,7 @@ export function Navbar() {
               </Link>
             ))}
 
-            {isSignedIn && (
+            {isSignedIn && isAdmin && (
               <Link
                 href="/admin"
                 className="text-[13px] font-bold text-gray-900 hover:text-bethel-red transition-colors uppercase tracking-[0.15em]"
@@ -162,7 +197,7 @@ export function Navbar() {
               </Link>
             )}
 
-            {isSignedIn && (
+            {isSignedIn ? (
               <div className="pt-2 border-t mt-2">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">{user?.emailAddresses[0]?.emailAddress}</span>
@@ -170,6 +205,14 @@ export function Navbar() {
                     <Button variant="outline" size="sm">Sign Out</Button>
                   </SignOutButton>
                 </div>
+              </div>
+            ) : (
+              <div className="pt-2 border-t mt-2">
+                <SignInButton mode="modal">
+                  <Button className="w-full bg-bethel-red hover:bg-[#b93f1f] text-white font-bold uppercase tracking-wider">
+                    Sign In
+                  </Button>
+                </SignInButton>
               </div>
             )}
           </div>
