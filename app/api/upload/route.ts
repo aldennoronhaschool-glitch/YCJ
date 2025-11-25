@@ -39,7 +39,14 @@ export async function POST(request: Request) {
     let folderPath = folder || "uploads";
     if (folder === "gallery") {
       if (customEventName) {
-        folderPath = `gallery/${customEventName}`;
+        // Sanitize folder name: remove special chars, replace spaces with underscores
+        // ImageKit allows: Alphanumeric, underscore, hyphen, space, period
+        const sanitizedEventName = customEventName
+          .trim()
+          .replace(/[^a-zA-Z0-9\s\-_.]/g, "") // Remove invalid chars
+          .replace(/\s+/g, "_"); // Replace spaces with underscores
+
+        folderPath = `gallery/${sanitizedEventName}`;
       } else if (eventId) {
         // You might want to fetch the event name here for better folder names
         folderPath = `gallery/event-${eventId}`;
