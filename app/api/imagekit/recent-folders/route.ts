@@ -41,7 +41,8 @@ export async function GET(request: Request) {
                 const pathParts = filePath.split('/').filter(Boolean);
                 const galleryIndex = pathParts.indexOf('gallery');
 
-                if (galleryIndex !== -1 && pathParts.length > galleryIndex + 1) {
+                // We need at least: gallery -> FolderName -> FileName
+                if (galleryIndex !== -1 && pathParts.length > galleryIndex + 2) {
                     const folderName = pathParts[galleryIndex + 1];
 
                     if (!folderMap.has(folderName)) {

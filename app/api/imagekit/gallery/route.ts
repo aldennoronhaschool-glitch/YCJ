@@ -42,13 +42,14 @@ export async function GET() {
             if (filePath.includes('/gallery/')) {
                 // Extract folder name from path like "/gallery/FolderName/image.jpg"
                 const pathParts = filePath.split('/').filter(Boolean);
-                console.log("Path parts:", pathParts);
 
                 // Find the index of 'gallery' and get the next part as folder name
                 const galleryIndex = pathParts.indexOf('gallery');
-                if (galleryIndex !== -1 && pathParts.length > galleryIndex + 1) {
+
+                // We need at least: gallery -> FolderName -> FileName
+                // So length must be > galleryIndex + 2
+                if (galleryIndex !== -1 && pathParts.length > galleryIndex + 2) {
                     const folderName = pathParts[galleryIndex + 1];
-                    console.log("Extracted folder name:", folderName);
 
                     if (!folderMap.has(folderName)) {
                         folderMap.set(folderName, []);
