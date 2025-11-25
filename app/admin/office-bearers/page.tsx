@@ -2,6 +2,7 @@ import { getOfficeBearers } from "@/lib/supabase/officeBearers";
 import { OfficeBearersManager } from "@/components/admin/office-bearers-manager";
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 
 export default async function AdminOfficeBearersPage() {
