@@ -236,6 +236,38 @@ export function GalleryManager({
     }
   };
 
+  const handleDeleteFolder = async (folderName: string) => {
+    if (!confirm(`Are you sure you want to delete the folder "${folderName}" and all its images? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      // Encode the folder path properly
+      const folderPath = encodeURIComponent(`gallery/${folderName}`);
+      const response = await fetch(`/api/imagekit/delete-folder/${folderPath}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to delete folder");
+      }
+
+      toast({
+        title: "Folder deleted",
+        description: "The folder and all its contents have been deleted.",
+      });
+
+      await fetchFolders();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Upload Section */}
@@ -330,8 +362,8 @@ export function GalleryManager({
               <Label
                 htmlFor="upload"
                 className={`flex items-center justify-center gap-2 px-6 py-3 border rounded-md cursor-pointer transition-colors ${!selectedEvent && !customEventName
-                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-white border-primary text-primary hover:bg-primary/10"
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  : "bg-white border-primary text-primary hover:bg-primary/10"
                   }`}
               >
                 <Upload className="w-4 h-4" />
@@ -389,13 +421,22 @@ export function GalleryManager({
                         )}
                       </button>
 
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setEditingFolder(editingFolder === folder.id ? null : folder.id)}
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setEditingFolder(editingFolder === folder.id ? null : folder.id)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDeleteFolder(folder.name)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
 
                     {editingFolder === folder.id && (
