@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+// Force dynamic rendering for pages using admin client
 const nextConfig = {
   images: {
     remotePatterns: [
