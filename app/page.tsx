@@ -19,7 +19,7 @@ export default async function HomePage() {
   // Fetch recent gallery folders from ImageKit
   let recentGalleryFolders: any[] = [];
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/imagekit/recent-folders?limit=4`, {
+    const response = await fetch(`/api/imagekit/recent-folders?limit=4`, {
       cache: 'no-store'
     });
     if (response.ok) {
