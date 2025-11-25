@@ -1,12 +1,12 @@
 import { Navbar } from "@/components/navbar";
-import { getContactSettings } from "@/lib/supabase/contact";
+import { getContactSettingsPublic } from "@/lib/supabase/contact";
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function ContactPage() {
-    const settings = await getContactSettings();
+    const settings = await getContactSettingsPublic();
 
     return (
         <>

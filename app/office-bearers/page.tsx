@@ -1,12 +1,12 @@
 import Image from "next/image";
-import { getOfficeBearers } from "@/lib/supabase/officeBearers";
+import { getOfficeBearersPublic } from "@/lib/supabase/officeBearers";
 import { Navbar } from "@/components/navbar";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function OfficeBearersPage() {
-  const bearers = await getOfficeBearers();
+  const bearers = await getOfficeBearersPublic();
 
   return (
     <>

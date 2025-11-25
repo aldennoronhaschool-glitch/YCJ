@@ -1,11 +1,11 @@
 import { Navbar } from "@/components/navbar";
-import { getAboutSections } from "@/lib/supabase/about";
+import { getAboutSectionsPublic } from "@/lib/supabase/about";
 import Image from "next/image";
 
 export const dynamic = 'force-dynamic';
 
 export default async function AboutPage() {
-    let sections = await getAboutSections();
+    let sections = await getAboutSectionsPublic();
 
     // Fallback content if database is not set up yet
     if (sections.length === 0) {

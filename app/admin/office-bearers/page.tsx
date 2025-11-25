@@ -1,4 +1,4 @@
-import { getOfficeBearers } from "@/lib/supabase/officeBearers";
+import { getOfficeBearersPublic } from "@/lib/supabase/officeBearers";
 import { OfficeBearersManager } from "@/components/admin/office-bearers-manager";
 
 export const dynamic = 'force-dynamic';
@@ -6,7 +6,7 @@ export const revalidate = 0;
 
 
 export default async function AdminOfficeBearersPage() {
-  const bearers = await getOfficeBearers();
+  const bearers = await getOfficeBearersPublic();
 
   return (
     <div className="min-h-screen bg-background py-12 px-4">

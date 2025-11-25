@@ -39,6 +39,36 @@ export async function getOfficeBearers(): Promise<OfficeBearer[]> {
   }
 }
 
+// Public version that doesn't use cookies - safe for static generation
+export async function getOfficeBearersPublic(): Promise<OfficeBearer[]> {
+  try {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from("office_bearers")
+      .select("*")
+      .order("order_index", { ascending: true })
+      .order("created_at", { ascending: true });
+
+    if (error) {
+      // If table missing, just return empty list
+      if (
+        error.code === "42P01" ||
+        error.message?.includes("does not exist") ||
+        error.message?.includes("Could not find the table")
+      ) {
+        return [];
+      }
+      console.error("Error fetching office bearers:", error.message || error);
+      return [];
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error("Exception fetching office bearers:", error);
+    return [];
+  }
+}
+
 export async function createOfficeBearer(
   bearer: Omit<OfficeBearer, "id" | "created_at" | "order_index"> & { order_index?: number }
 ) {
@@ -52,7 +82,7 @@ export async function createOfficeBearer(
       `Failed to create admin client: ${clientError.message}. Make sure SUPABASE_SERVICE_ROLE_KEY is set in your environment variables.`
     );
   }
-  
+
   // Get the max order_index to place new bearer at the end
   const { data: existing, error: orderError } = await supabase
     .from("office_bearers")
@@ -60,11 +90,11 @@ export async function createOfficeBearer(
     .order("order_index", { ascending: false })
     .limit(1)
     .maybeSingle();
-  
+
   // If table doesn't exist or no data, start at 0
   const maxOrder = orderError || !existing ? -1 : (existing.order_index ?? -1);
   const newOrderIndex = maxOrder + 1;
-  
+
   const { data, error } = await supabase
     .from("office_bearers")
     .insert([{
@@ -83,8 +113,8 @@ export async function createOfficeBearer(
       error: error,
     });
     throw new Error(
-      error.message || 
-      error.details || 
+      error.message ||
+      error.details ||
       `Failed to create office bearer: ${error.code || "Unknown error"}`
     );
   }

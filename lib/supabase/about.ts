@@ -37,6 +37,32 @@ export async function getAboutSections(): Promise<AboutSection[]> {
     }
 }
 
+// Public version that doesn't use cookies - safe for static generation
+export async function getAboutSectionsPublic(): Promise<AboutSection[]> {
+    try {
+        const supabase = createAdminClient();
+        const { data, error } = await supabase
+            .from("about_us")
+            .select("*")
+            .order("order_index", { ascending: true });
+
+        if (error) {
+            console.error("Error fetching about sections:", {
+                message: error.message,
+                code: error.code,
+                details: error.details,
+                hint: error.hint,
+            });
+            return [];
+        }
+
+        return data || [];
+    } catch (error: any) {
+        console.error("Exception fetching about sections:", error?.message || error);
+        return [];
+    }
+}
+
 export async function getAboutSection(sectionKey: string): Promise<AboutSection | null> {
     try {
         const supabase = await createClient();
