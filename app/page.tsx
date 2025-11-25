@@ -40,7 +40,7 @@ export default async function HomePage() {
       <Navbar />
       <div className="min-h-screen bg-white">
         {/* Hero Section with Church Name */}
-        <section className={`relative min-h-[60vh] flex items-center pt-32 pb-16 px-4 ${heroBackgroundImage ? '' : 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50'}`}>
+        <section className={`relative min-h-[50vh] md:min-h-[60vh] flex items-center pt-24 md:pt-32 pb-12 md:pb-16 px-4 ${heroBackgroundImage ? '' : 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50'}`}>
           {heroBackgroundImage && (
             <div className="absolute inset-0 z-0">
               <Image
@@ -55,10 +55,10 @@ export default async function HomePage() {
           )}
           <div className="relative z-10 max-w-7xl mx-auto text-center">
 
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gray-900">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-3 md:mb-4 text-gray-900 px-2">
               {heroTitle}
             </h1>
-            <p className="text-xl mb-8 max-w-2xl mx-auto text-gray-700">
+            <p className="text-base sm:text-lg md:text-xl mb-6 md:mb-8 max-w-2xl mx-auto text-gray-700 px-4">
               {heroSubtitle}
             </p>
           </div>
@@ -66,15 +66,15 @@ export default async function HomePage() {
 
         {/* Important Announcements Section - Top Priority */}
         {showAnnouncements && announcements.length > 0 && (
-          <section className="bg-primary text-white py-6 px-4">
+          <section className="bg-primary text-white py-4 md:py-6 px-4">
             <div className="max-w-7xl mx-auto">
               <div className="text-center">
-                <h2 className="text-2xl md:text-3xl font-bold mb-4">Important Announcements</h2>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 md:mb-4">Important Announcements</h2>
                 <div className="space-y-3">
                   {announcements.slice(0, 3).map((announcement) => (
-                    <div key={announcement.id} className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                      <h3 className="font-semibold text-lg mb-1">{announcement.title}</h3>
-                      <p className="text-white/90">{announcement.content}</p>
+                    <div key={announcement.id} className="bg-white/10 backdrop-blur-sm rounded-lg p-3 md:p-4 border border-white/20">
+                      <h3 className="font-semibold text-base md:text-lg mb-1">{announcement.title}</h3>
+                      <p className="text-sm md:text-base text-white/90">{announcement.content}</p>
                     </div>
                   ))}
                 </div>
@@ -85,45 +85,45 @@ export default async function HomePage() {
 
         {/* Service Times Section - Similar to Bethel AG */}
         {settings.service_times_enabled !== "false" && (
-          <section className="py-16 px-4 bg-gray-50">
+          <section className="py-12 md:py-16 px-4 bg-gray-50">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">JOIN US THIS</h2>
-              <h3 className="text-4xl md:text-5xl font-bold text-primary mb-8">SUNDAY</h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <div className="text-sm text-gray-600 mb-2">{settings.service_1_label || "1st Service"}</div>
-                  <div className="text-3xl font-bold text-primary">{settings.service_1_time || "8 AM"}</div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-1 md:mb-2">JOIN US THIS</h2>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-6 md:mb-8">SUNDAY</h3>
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+                <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+                  <div className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2">{settings.service_1_label || "1st Service"}</div>
+                  <div className="text-xl md:text-3xl font-bold text-primary">{settings.service_1_time || "8 AM"}</div>
                 </div>
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <div className="text-sm text-gray-600 mb-2">{settings.service_2_label || "2nd Service"}</div>
-                  <div className="text-3xl font-bold text-primary">{settings.service_2_time || "10:00 AM"}</div>
+                <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+                  <div className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2">{settings.service_2_label || "2nd Service"}</div>
+                  <div className="text-xl md:text-3xl font-bold text-primary">{settings.service_2_time || "10:00 AM"}</div>
                 </div>
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <div className="text-sm text-gray-600 mb-2">{settings.service_3_label || "3rd Service"}</div>
-                  <div className="text-3xl font-bold text-primary">{settings.service_3_time || "12:00 PM"}</div>
+                <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+                  <div className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2">{settings.service_3_label || "3rd Service"}</div>
+                  <div className="text-xl md:text-3xl font-bold text-primary">{settings.service_3_time || "12:00 PM"}</div>
                 </div>
-                <div className="bg-white rounded-lg shadow-md p-6">
-                  <div className="text-sm text-gray-600 mb-2">{settings.service_4_label || "4th Service"}</div>
-                  <div className="text-3xl font-bold text-primary">{settings.service_4_time || "6 PM"}</div>
+                <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+                  <div className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2">{settings.service_4_label || "4th Service"}</div>
+                  <div className="text-xl md:text-3xl font-bold text-primary">{settings.service_4_time || "6 PM"}</div>
                 </div>
               </div>
-              <p className="text-gray-600 mt-6">{settings.service_language || "ALL SERVICES IN ENGLISH"}</p>
+              <p className="text-sm md:text-base text-gray-600 mt-4 md:mt-6">{settings.service_language || "ALL SERVICES IN ENGLISH"}</p>
             </div>
           </section>
         )}
 
         {/* Upcoming Events */}
-        <section className="py-16 px-4 bg-white">
+        <section className="py-12 md:py-16 px-4 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">UPCOMING EVENTS</h2>
+            <div className="text-center mb-8 md:mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">UPCOMING EVENTS</h2>
             </div>
             {events.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-gray-500">No upcoming events at the moment. Check back soon!</p>
               </div>
             ) : (
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 {events.map((event) => (
                   <Card key={event.id} className="hover:shadow-lg transition-shadow border border-gray-200">
                     {event.banner_url && (
@@ -165,20 +165,20 @@ export default async function HomePage() {
 
         {/* Recent Gallery Updates */}
         {recentGalleryFolders.length > 0 && (
-          <section className="py-16 px-4 bg-gray-50">
+          <section className="py-12 md:py-16 px-4 bg-gray-50">
             <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">RECENT GALLERY</h2>
-                <p className="text-gray-600">Browse our latest photos from recent events</p>
+              <div className="text-center mb-8 md:mb-12">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">RECENT GALLERY</h2>
+                <p className="text-sm md:text-base text-gray-600">Browse our latest photos from recent events</p>
               </div>
-              <div className="grid md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                 {recentGalleryFolders.map((folder) => (
                   <Link
                     key={folder.id}
                     href={`/gallery/${encodeURIComponent(folder.name)}`}
                     className="group block"
                   >
-                    <div className="relative h-64 w-full overflow-hidden rounded-lg shadow-md">
+                    <div className="relative h-48 sm:h-56 md:h-64 w-full overflow-hidden rounded-lg shadow-md">
                       <Image
                         src={folder.coverImage}
                         alt={folder.name}
@@ -186,9 +186,9 @@ export default async function HomePage() {
                         className="object-cover transition-transform duration-300 group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90" />
-                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                        <h3 className="text-lg font-bold mb-1 line-clamp-1">{folder.name}</h3>
-                        <p className="text-sm text-white/80">{folder.count} Photos</p>
+                      <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4 text-white">
+                        <h3 className="text-base md:text-lg font-bold mb-1 line-clamp-1">{folder.name}</h3>
+                        <p className="text-xs md:text-sm text-white/80">{folder.count} Photos</p>
                       </div>
                     </div>
                   </Link>
@@ -204,19 +204,19 @@ export default async function HomePage() {
         )}
 
         {/* Quick Links Section */}
-        <section className="py-16 px-4 bg-gray-50">
+        <section className="py-12 md:py-16 px-4 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Quick Links</h2>
+            <div className="text-center mb-8 md:mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">Quick Links</h2>
             </div>
-            <div className="grid md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               <Card className="text-center hover:shadow-lg transition-shadow border border-gray-200">
-                <CardHeader>
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Calendar className="w-8 h-8 text-primary" />
+                <CardHeader className="pb-3 md:pb-6">
+                  <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Calendar className="w-6 h-6 md:w-8 md:h-8 text-primary" />
                   </div>
-                  <CardTitle className="text-lg">Events</CardTitle>
-                  <CardDescription>View all upcoming events</CardDescription>
+                  <CardTitle className="text-base md:text-lg">Events</CardTitle>
+                  <CardDescription className="text-xs md:text-sm">View all upcoming events</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Button asChild className="w-full">
@@ -226,12 +226,12 @@ export default async function HomePage() {
               </Card>
 
               <Card className="text-center hover:shadow-lg transition-shadow border border-gray-200">
-                <CardHeader>
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                    <ImageIcon className="w-8 h-8 text-primary" />
+                <CardHeader className="pb-3 md:pb-6">
+                  <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+                    <ImageIcon className="w-6 h-6 md:w-8 md:h-8 text-primary" />
                   </div>
-                  <CardTitle className="text-lg">Gallery</CardTitle>
-                  <CardDescription>Browse photos from events</CardDescription>
+                  <CardTitle className="text-base md:text-lg">Gallery</CardTitle>
+                  <CardDescription className="text-xs md:text-sm">Browse photos from events</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Button asChild className="w-full">
@@ -241,12 +241,12 @@ export default async function HomePage() {
               </Card>
 
               <Card className="text-center hover:shadow-lg transition-shadow border border-gray-200">
-                <CardHeader>
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Users className="w-8 h-8 text-primary" />
+                <CardHeader className="pb-3 md:pb-6">
+                  <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Users className="w-6 h-6 md:w-8 md:h-8 text-primary" />
                   </div>
-                  <CardTitle className="text-lg">Office Bearers</CardTitle>
-                  <CardDescription>Meet our leaders</CardDescription>
+                  <CardTitle className="text-base md:text-lg">Office Bearers</CardTitle>
+                  <CardDescription className="text-xs md:text-sm">Meet our leaders</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Button asChild className="w-full">
@@ -256,12 +256,12 @@ export default async function HomePage() {
               </Card>
 
               <Card className="text-center hover:shadow-lg transition-shadow border border-gray-200">
-                <CardHeader>
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Trophy className="w-8 h-8 text-primary" />
+                <CardHeader className="pb-3 md:pb-6">
+                  <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Trophy className="w-6 h-6 md:w-8 md:h-8 text-primary" />
                   </div>
-                  <CardTitle className="text-lg">Competitions</CardTitle>
-                  <CardDescription>Register for competitions</CardDescription>
+                  <CardTitle className="text-base md:text-lg">Competitions</CardTitle>
+                  <CardDescription className="text-xs md:text-sm">Register for competitions</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Button asChild className="w-full">
@@ -274,10 +274,10 @@ export default async function HomePage() {
         </section>
 
         {/* Welcome Note Section */}
-        <section className="py-16 px-4 bg-white">
+        <section className="py-12 md:py-16 px-4 bg-gray-50">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">Welcome Note</h2>
-            <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-6 text-center">Welcome Note</h2>
+            <div className="prose prose-sm md:prose-lg max-w-none text-gray-700 leading-relaxed">
               {settings.welcome_note ? (
                 <div className="whitespace-pre-line">
                   {settings.welcome_note.split('\n').map((paragraph, index) => (
