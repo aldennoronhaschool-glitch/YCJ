@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/navbar";
 import { getContactSettingsPublic } from "@/lib/supabase/contact";
+import { ContactForm } from "@/components/contact-form";
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
 
 export const dynamic = 'force-dynamic';
@@ -29,243 +30,59 @@ export default async function ContactPage() {
                     <div className="max-w-6xl mx-auto">
                         <div className="grid md:grid-cols-2 gap-12">
                             {/* Left Side - Contact Form */}
-                            <div className="bg-gray-100 p-8 rounded-lg">
-                                <h2 className="text-3xl font-bold text-gray-900 mb-6">Your Details</h2>
-
-                                <form className="space-y-6">
-                                    {/* First Name */}
-                                    <div>
-                                        <label htmlFor="firstName" className="block text-sm font-bold text-gray-900 mb-2">
-                                            First Name <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="firstName"
-                                            name="firstName"
-                                            required
-                                            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-bethel-red focus:border-transparent"
-                                        />
-                                    </div>
-
-                                    {/* Last Name */}
-                                    <div>
-                                        <label htmlFor="lastName" className="block text-sm font-bold text-gray-900 mb-2">
-                                            Last Name <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="lastName"
-                                            name="lastName"
-                                            required
-                                            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-bethel-red focus:border-transparent"
-                                        />
-                                    </div>
-
-                                    {/* Gender */}
-                                    <div>
-                                        <label className="block text-sm font-bold text-gray-900 mb-2">
-                                            Gender <span className="text-red-500">*</span>
-                                        </label>
-                                        <div className="flex gap-6">
-                                            <label className="flex items-center">
-                                                <input
-                                                    type="radio"
-                                                    name="gender"
-                                                    value="male"
-                                                    className="w-4 h-4 text-bethel-red focus:ring-bethel-red"
-                                                />
-                                                <span className="ml-2 text-gray-900">Male</span>
-                                            </label>
-                                            <label className="flex items-center">
-                                                <input
-                                                    type="radio"
-                                                    name="gender"
-                                                    value="female"
-                                                    className="w-4 h-4 text-bethel-red focus:ring-bethel-red"
-                                                />
-                                                <span className="ml-2 text-gray-900">Female</span>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    {/* Email */}
-                                    <div>
-                                        <label htmlFor="email" className="block text-sm font-bold text-gray-900 mb-2">
-                                            Email Address <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="email"
-                                            id="email"
-                                            name="email"
-                                            required
-                                            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-bethel-red focus:border-transparent"
-                                        />
-                                    </div>
-
-                                    {/* Contact Number */}
-                                    <div>
-                                        <label htmlFor="phone" className="block text-sm font-bold text-gray-900 mb-2">
-                                            Contact Number <span className="text-red-500">*</span>
-                                        </label>
-                                        <div className="flex gap-2">
-                                            <select className="px-3 py-3 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-bethel-red focus:border-transparent">
-                                                <option value="+91">🇮🇳 +91</option>
-                                            </select>
-                                            <input
-                                                type="tel"
-                                                id="phone"
-                                                name="phone"
-                                                required
-                                                placeholder="+91"
-                                                className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-bethel-red focus:border-transparent"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* City */}
-                                    <div>
-                                        <label htmlFor="city" className="block text-sm font-bold text-gray-900 mb-2">
-                                            City <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="city"
-                                            name="city"
-                                            required
-                                            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-bethel-red focus:border-transparent"
-                                        />
-                                    </div>
-
-                                    {/* Connection to Church */}
-                                    <div>
-                                        <label className="block text-sm font-bold text-gray-900 mb-2">
-                                            How are you connected to YCJ Church? <span className="text-red-500">*</span>
-                                        </label>
-                                        <div className="space-y-2">
-                                            <label className="flex items-start">
-                                                <input
-                                                    type="radio"
-                                                    name="connection"
-                                                    value="member"
-                                                    className="w-4 h-4 mt-1 text-bethel-red focus:ring-bethel-red"
-                                                />
-                                                <span className="ml-2 text-gray-900">Member/Volunteer in this church</span>
-                                            </label>
-                                            <label className="flex items-start">
-                                                <input
-                                                    type="radio"
-                                                    name="connection"
-                                                    value="attending"
-                                                    className="w-4 h-4 mt-1 text-bethel-red focus:ring-bethel-red"
-                                                />
-                                                <span className="ml-2 text-gray-900">Attending YCJ Church regularly</span>
-                                            </label>
-                                            <label className="flex items-start">
-                                                <input
-                                                    type="radio"
-                                                    name="connection"
-                                                    value="online-other"
-                                                    className="w-4 h-4 mt-1 text-bethel-red focus:ring-bethel-red"
-                                                />
-                                                <span className="ml-2 text-gray-900">Attending YCJ's ONLINE Services BUT going to another church</span>
-                                            </label>
-                                            <label className="flex items-start">
-                                                <input
-                                                    type="radio"
-                                                    name="connection"
-                                                    value="online-only"
-                                                    className="w-4 h-4 mt-1 text-bethel-red focus:ring-bethel-red"
-                                                />
-                                                <span className="ml-2 text-gray-900">Attending YCJ's ONLINE Services BUT not going to any church</span>
-                                            </label>
-                                            <label className="flex items-start">
-                                                <input
-                                                    type="radio"
-                                                    name="connection"
-                                                    value="none"
-                                                    className="w-4 h-4 mt-1 text-bethel-red focus:ring-bethel-red"
-                                                />
-                                                <span className="ml-2 text-gray-900">Not attending any church at all</span>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    {/* Message Title */}
-                                    <div>
-                                        <label htmlFor="messageTitle" className="block text-sm font-bold text-gray-900 mb-2">
-                                            Message Title <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="messageTitle"
-                                            name="messageTitle"
-                                            required
-                                            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-bethel-red focus:border-transparent"
-                                        />
-                                    </div>
-
-                                    {/* Message Body */}
-                                    <div>
-                                        <label htmlFor="message" className="block text-sm font-bold text-gray-900 mb-2">
-                                            Message Body (Comments / Questions) <span className="text-red-500">*</span>
-                                        </label>
-                                        <textarea
-                                            id="message"
-                                            name="message"
-                                            required
-                                            rows={6}
-                                            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-bethel-red focus:border-transparent resize-none"
-                                        />
-                                    </div>
-
-                                    {/* Submit Button */}
-                                    <button
-                                        type="submit"
-                                        className="px-8 py-3 bg-gray-700 hover:bg-gray-800 text-white font-bold rounded transition-colors"
-                                    >
-                                        Send Message
-                                    </button>
-                                </form>
-                            </div>
+                            <ContactForm />
 
                             {/* Right Side - Contact Information */}
-                            <div className="space-y-8">
-                                {/* Telephone */}
-                                <div>
-                                    <h3 className="font-bold text-gray-900 mb-2">Telephone:</h3>
-                                    <a
-                                        href={`tel:${settings.telephone.replace(/[^0-9+]/g, '')}`}
-                                        className="text-bethel-red hover:underline text-lg"
-                                    >
-                                        {settings.telephone}
-                                    </a>
-                                    <p className="text-gray-600 text-sm mt-1">({settings.telephone_hours})</p>
-                                </div>
-
+                            <div className="space-y-6">
                                 {/* Email */}
                                 <div>
-                                    <h3 className="font-bold text-gray-900 mb-2">Email:</h3>
+                                    <p className="text-sm text-gray-500 mb-1">Email:</p>
                                     <a
                                         href={`mailto:${settings.email}`}
-                                        className="text-bethel-red hover:underline"
+                                        className="text-gray-700 hover:text-bethel-red transition-colors"
                                     >
                                         {settings.email}
                                     </a>
                                 </div>
 
-                                {/* Office Hours */}
+                                {/* Location/Address */}
                                 <div>
-                                    <h3 className="font-bold text-gray-900 mb-2">Office Hours:</h3>
-                                    <p className="text-gray-900">{settings.office_days},</p>
-                                    <p className="text-gray-600">{settings.office_hours}</p>
+                                    <p className="text-sm text-gray-500 mb-1">Location:</p>
+                                    <p className="text-gray-700">
+                                        {settings.address_line1}
+                                        {settings.address_line2 && (
+                                            <>
+                                                <br />
+                                                {settings.address_line2}
+                                            </>
+                                        )}
+                                        {settings.address_line3 && (
+                                            <>
+                                                <br />
+                                                {settings.address_line3}
+                                            </>
+                                        )}
+                                    </p>
                                 </div>
 
-                                {/* Address */}
+                                {/* Phone */}
+                                {settings.display_telephone && settings.display_telephone !== 'xxxxxxx' && (
+                                    <div>
+                                        <p className="text-sm text-gray-500 mb-1">Phone:</p>
+                                        <a
+                                            href={`tel:${settings.telephone.replace(/[^0-9+]/g, '')}`}
+                                            className="text-gray-700 hover:text-bethel-red transition-colors"
+                                        >
+                                            {settings.display_telephone}
+                                        </a>
+                                    </div>
+                                )}
+
+                                {/* Office Hours */}
                                 <div>
-                                    <h3 className="font-bold text-gray-900 mb-2">Address:</h3>
-                                    <p className="text-gray-900">{settings.address_line1},</p>
-                                    {settings.address_line2 && <p className="text-gray-900">{settings.address_line2}</p>}
-                                    {settings.address_line3 && <p className="text-gray-900">{settings.address_line3}</p>}
+                                    <p className="text-sm text-gray-500 mb-1">Office Hours:</p>
+                                    <p className="text-gray-700">{settings.office_days}</p>
+                                    <p className="text-gray-600 text-sm">{settings.office_hours}</p>
                                 </div>
                             </div>
                         </div>

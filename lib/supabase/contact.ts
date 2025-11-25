@@ -8,6 +8,7 @@ export interface ContactSettings {
 export async function getContactSettings(): Promise<ContactSettings> {
     const defaultSettings: ContactSettings = {
         telephone: "+91 (80) 6753 7777",
+        display_telephone: "xxxxxxx",
         telephone_hours: "Tuesday to Sunday",
         email: "info@ycjchurch.org",
         office_hours: "10:00am to 6:00pm",
@@ -62,6 +63,7 @@ export async function getContactSettings(): Promise<ContactSettings> {
 export async function getContactSettingsPublic(): Promise<ContactSettings> {
     const defaultSettings: ContactSettings = {
         telephone: "+91 (80) 6753 7777",
+        display_telephone: "xxxxxxx",
         telephone_hours: "Tuesday to Sunday",
         email: "info@ycjchurch.org",
         office_hours: "10:00am to 6:00pm",

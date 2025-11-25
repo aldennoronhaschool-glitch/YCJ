@@ -13,13 +13,13 @@ export default async function AdminDashboard() {
   // Check authentication and admin status
   try {
     const { userId } = await auth();
-    
+
     if (!userId) {
       redirect("/admin/login");
     }
 
     const admin = await isAdmin();
-    
+
     if (!admin) {
       redirect("/");
     }
@@ -160,12 +160,24 @@ export default async function AdminDashboard() {
 
           <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader>
-              <CardTitle>Registrations</CardTitle>
-              <CardDescription>View and manage competition registrations</CardDescription>
+              <CardTitle>Contact Settings</CardTitle>
+              <CardDescription>Edit contact page information, phone number, email, address, and social links</CardDescription>
             </CardHeader>
             <CardContent>
               <Button asChild className="w-full">
-                <Link href="/admin/registrations">View Registrations</Link>
+                <Link href="/admin/contact">Manage Contact Settings</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle>Contact Submissions</CardTitle>
+              <CardDescription>View and manage contact form submissions from visitors</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button asChild className="w-full">
+                <Link href="/admin/contact-submissions">View Submissions</Link>
               </Button>
             </CardContent>
           </Card>

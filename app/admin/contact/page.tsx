@@ -133,13 +133,28 @@ export default function AdminContactPage() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div>
-                            <Label htmlFor="telephone">Telephone</Label>
+                            <Label htmlFor="telephone">Telephone (Internal Use)</Label>
                             <Input
                                 id="telephone"
                                 value={settings.telephone || ""}
                                 onChange={(e) => handleChange("telephone", e.target.value)}
                                 placeholder="+91 (80) 6753 7777"
                             />
+                            <p className="text-sm text-gray-500 mt-1">
+                                This number is for internal use only. Visitors will see the Display Telephone below.
+                            </p>
+                        </div>
+                        <div>
+                            <Label htmlFor="display_telephone">Display Telephone (Public)</Label>
+                            <Input
+                                id="display_telephone"
+                                value={settings.display_telephone || ""}
+                                onChange={(e) => handleChange("display_telephone", e.target.value)}
+                                placeholder="xxxxxxx"
+                            />
+                            <p className="text-sm text-gray-500 mt-1">
+                                This is what visitors see on the contact page. Use "xxxxxxx" to hide the number, or enter a real number to display it.
+                            </p>
                         </div>
                         <div>
                             <Label htmlFor="telephone_hours">Telephone Hours</Label>

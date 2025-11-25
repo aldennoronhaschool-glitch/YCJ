@@ -7,13 +7,29 @@ import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
-import { createClient } from "@supabase/supabase-js";
+
+interface ContactSettings {
+  telephone: string;
+  display_telephone: string;
+  email: string;
+  address_line1: string;
+  address_line2: string;
+  address_line3: string;
+}
 
 export function Navbar() {
   const { isSignedIn, user } = useUser();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [contactSettings, setContactSettings] = useState<ContactSettings>({
+    telephone: "+91 (80) 6753 7777",
+    display_telephone: "xxxxxxx",
+    email: "info@ycjchurch.org",
+    address_line1: "CSI Christa Jyothi Church",
+    address_line2: "Bima Nagar, Bailoor, Udupi",
+    address_line3: "Karnataka 576101",
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,6 +65,30 @@ export function Navbar() {
       setIsAdmin(false);
     }
   }, [isSignedIn, user]);
+
+  // Fetch contact settings
+  useEffect(() => {
+    async function fetchContactSettings() {
+      try {
+        const response = await fetch('/api/admin/contact');
+        if (response.ok) {
+          const data = await response.json();
+          setContactSettings({
+            telephone: data.telephone || "+91 (80) 6753 7777",
+            display_telephone: data.display_telephone || "xxxxxxx",
+            email: data.email || "info@ycjchurch.org",
+            address_line1: data.address_line1 || "CSI Christa Jyothi Church",
+            address_line2: data.address_line2 || "Bima Nagar, Bailoor, Udupi",
+            address_line3: data.address_line3 || "Karnataka 576101",
+          });
+        }
+      } catch (error) {
+        console.error("Failed to fetch contact settings", error);
+      }
+    }
+
+    fetchContactSettings();
+  }, []);
 
   const navLinks = [
     { name: "HOME", href: "/" },
@@ -92,28 +132,49 @@ export function Navbar() {
                       <h3 className="font-bold text-gray-900 mb-4 text-sm uppercase tracking-wide">Contact Information</h3>
 
                       <div className="space-y-3 text-sm">
+                        {/* Email - First */}
                         <div>
-                          <p className="text-gray-500 text-xs mb-1">Phone</p>
-                          <a href="tel:+918067537777" className="text-bethel-red hover:underline font-medium">
-                            +91 (80) 6753 7777
+                          <p className="text-gray-500 text-xs mb-1">Email:</p>
+                          <a
+                            href={`mailto:${contactSettings.email}`}
+                            className="text-gray-700 hover:text-bethel-red transition-colors"
+                          >
+                            {contactSettings.email}
                           </a>
                         </div>
 
+                        {/* Location/Address - Second */}
                         <div>
-                          <p className="text-gray-500 text-xs mb-1">Email</p>
-                          <a href="mailto:info@ycjchurch.org" className="text-bethel-red hover:underline font-medium">
-                            info@ycjchurch.org
-                          </a>
-                        </div>
-
-                        <div>
-                          <p className="text-gray-500 text-xs mb-1">Address</p>
+                          <p className="text-gray-500 text-xs mb-1">Location:</p>
                           <p className="text-gray-700 leading-relaxed">
-                            CSI Christa Jyothi Church<br />
-                            Bima Nagar, Bailoor, Udupi<br />
-                            Karnataka 576101
+                            {contactSettings.address_line1}
+                            {contactSettings.address_line2 && (
+                              <>
+                                <br />
+                                {contactSettings.address_line2}
+                              </>
+                            )}
+                            {contactSettings.address_line3 && (
+                              <>
+                                <br />
+                                {contactSettings.address_line3}
+                              </>
+                            )}
                           </p>
                         </div>
+
+                        {/* Phone - Third (only if not masked) */}
+                        {contactSettings.display_telephone && contactSettings.display_telephone !== 'xxxxxxx' && (
+                          <div>
+                            <p className="text-gray-500 text-xs mb-1">Phone:</p>
+                            <a
+                              href={`tel:${contactSettings.telephone.replace(/[^0-9+]/g, '')}`}
+                              className="text-gray-700 hover:text-bethel-red transition-colors"
+                            >
+                              {contactSettings.display_telephone}
+                            </a>
+                          </div>
+                        )}
 
                         <div className="pt-3 border-t">
                           <Link
