@@ -80,6 +80,11 @@ export async function getContactSettingsPublic(): Promise<ContactSettings> {
         hero_subtitle: "Get in touch with us",
     };
 
+    // During build time, return default settings to avoid database calls
+    if (process.env.NEXT_PHASE === 'phase-production-build') {
+        return defaultSettings;
+    }
+
     try {
         const supabase = createAdminClient();
         const { data, error } = await supabase

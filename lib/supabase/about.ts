@@ -39,6 +39,11 @@ export async function getAboutSections(): Promise<AboutSection[]> {
 
 // Public version that doesn't use cookies - safe for static generation
 export async function getAboutSectionsPublic(): Promise<AboutSection[]> {
+    // During build time, return empty array to avoid database calls
+    if (process.env.NEXT_PHASE === 'phase-production-build') {
+        return [];
+    }
+
     try {
         const supabase = createAdminClient();
         const { data, error } = await supabase
