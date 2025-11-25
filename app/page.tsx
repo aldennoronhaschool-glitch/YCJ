@@ -9,6 +9,7 @@ import { getRecentGalleryFolders } from "@/lib/supabase/gallery";
 import { Navbar } from "@/components/navbar";
 import { Logo } from "@/components/logo";
 import Image from "next/image";
+import { ImageLightbox } from "@/components/ui/image-lightbox";
 
 export default async function HomePage() {
   const events = await getLatestEvents(3);
@@ -126,14 +127,12 @@ export default async function HomePage() {
                 {events.map((event) => (
                   <Card key={event.id} className="hover:shadow-lg transition-shadow border border-gray-200">
                     {event.banner_url && (
-                      <div className="relative h-48 w-full">
-                        <Image
-                          src={event.banner_url}
-                          alt={event.title}
-                          fill
-                          className="object-cover rounded-t-lg"
-                        />
-                      </div>
+                      <ImageLightbox
+                        src={event.banner_url}
+                        alt={event.title}
+                        className="h-48 w-full"
+                        imageClassName="object-cover rounded-t-lg"
+                      />
                     )}
                     <CardHeader>
                       <div className="flex items-center gap-2 text-primary mb-2">
