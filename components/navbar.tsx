@@ -69,7 +69,7 @@ export function Navbar() {
       <div className="container flex items-center justify-between px-4 md:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <Logo size={scrolled ? 150 : 180} showText={false} />
+          <Logo size={scrolled ? 100 : 120} showText={false} />
         </Link>
 
         {/* Desktop Navigation */}
