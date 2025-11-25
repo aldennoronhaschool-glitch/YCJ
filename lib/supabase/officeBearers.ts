@@ -41,11 +41,6 @@ export async function getOfficeBearers(): Promise<OfficeBearer[]> {
 
 // Public version that doesn't use cookies - safe for static generation
 export async function getOfficeBearersPublic(): Promise<OfficeBearer[]> {
-  // During build time, return empty array to avoid database calls
-  if (process.env.NEXT_PHASE === 'phase-production-build') {
-    return [];
-  }
-
   try {
     const supabase = createAdminClient();
     const { data, error } = await supabase
@@ -73,6 +68,7 @@ export async function getOfficeBearersPublic(): Promise<OfficeBearer[]> {
     return [];
   }
 }
+
 
 export async function createOfficeBearer(
   bearer: Omit<OfficeBearer, "id" | "created_at" | "order_index"> & { order_index?: number }
