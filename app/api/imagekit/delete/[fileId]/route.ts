@@ -20,13 +20,20 @@ export async function DELETE(
 
         const { fileId } = await params;
 
+        if (!fileId) {
+            return NextResponse.json({ message: "File ID is required" }, { status: 400 });
+        }
+
+        console.log(`Attempting to delete image with ID: ${fileId}`);
+
         // Delete from ImageKit
         await new Promise((resolve, reject) => {
             imagekit.deleteFile(fileId, (error, result) => {
                 if (error) {
-                    console.error("ImageKit delete error:", error);
+                    console.error("ImageKit delete error details:", JSON.stringify(error, null, 2));
                     reject(error);
                 } else {
+                    console.log("ImageKit delete success:", result);
                     resolve(result);
                 }
             });
