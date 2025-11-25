@@ -33,18 +33,14 @@ export async function GET(request: Request) {
 
         // Filter and group by folder
         const folderMap = new Map<string, any[]>();
-
         files.forEach((file) => {
             const filePath = file.filePath || "";
-
             if (filePath.includes('/gallery/')) {
                 const pathParts = filePath.split('/').filter(Boolean);
                 const galleryIndex = pathParts.indexOf('gallery');
-
-                // We need at least: gallery -> FolderName -> FileName
+                // Need at least: gallery -> FolderName -> FileName
                 if (galleryIndex !== -1 && pathParts.length > galleryIndex + 2) {
                     const folderName = pathParts[galleryIndex + 1];
-
                     if (!folderMap.has(folderName)) {
                         folderMap.set(folderName, []);
                     }
@@ -60,39 +56,36 @@ export async function GET(request: Request) {
 
         // Fetch metadata
         const metadata = await getAllFolderMetadata();
-        const metadataMap = new Map(metadata.map(m => [m.folder_name, m.description]));
+        const metadataMap = new Map(metadata.map((m: any) => [m.folder_name, m.description]));
 
-        // Convert to folders array and sort by most recent
+        // Build folders array with images, sort by latest image date, limit
         const folders = Array.from(folderMap.entries())
             .map(([name, images]) => {
-                // Sort images by creation date
-                const sortedImages = images.sort((a, b) =>
-                    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-                );
-
+                const sortedImages = images.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
                 return {
                     id: name,
                     name: name,
-                    coverImage: sortedImages[0]?.url || '',
+                    coverImage: sortedImages[0]?.url || "",
                     count: images.length,
                     description: metadataMap.get(name) || null,
                     latestImageDate: sortedImages[0]?.createdAt || new Date().toISOString(),
+                    images: sortedImages.map(img => ({
+                        id: img.id,
+                        url: img.url,
+                        name: img.name,
+                        createdAt: img.createdAt,
+                    })),
                 };
             })
-            .sort((a, b) =>
-                new Date(b.latestImageDate).getTime() - new Date(a.latestImageDate).getTime()
-            )
+            .sort((a, b) => new Date(b.latestImageDate).getTime() - new Date(a.latestImageDate).getTime())
             .slice(0, limit);
 
         return NextResponse.json({ folders });
     } catch (error: any) {
         console.error("Error fetching recent folders:", error);
-        return NextResponse.json(
-            {
-                message: error.message || "Failed to fetch folders",
-                folders: [],
-            },
-            { status: 500 }
-        );
+        return NextResponse.json({
+            message: error.message || "Failed to fetch folders",
+            folders: [],
+        }, { status: 500 });
     }
 }
