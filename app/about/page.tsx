@@ -156,13 +156,13 @@ export default async function AboutPage() {
                                                     <h3 className="text-2xl font-bold text-gray-800 mb-8 text-center">
                                                         {pair.title}
                                                     </h3>
-                                                    <div className="flex flex-wrap justify-center gap-6">
+                                                    <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:justify-center sm:gap-6">
                                                         {pairBearers.map((bearer) => (
                                                             <div
                                                                 key={bearer.id}
                                                                 className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 w-full sm:w-64"
                                                             >
-                                                                <div className="relative h-64 bg-gradient-to-br from-blue-100 to-purple-100">
+                                                                <div className="relative h-40 sm:h-64 bg-gradient-to-br from-blue-100 to-purple-100">
                                                                     {bearer.photo_url ? (
                                                                         <Image
                                                                             src={bearer.photo_url}
@@ -172,19 +172,19 @@ export default async function AboutPage() {
                                                                         />
                                                                     ) : (
                                                                         <div className="absolute inset-0 flex items-center justify-center">
-                                                                            <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center">
-                                                                                <span className="text-4xl font-bold text-primary">
+                                                                            <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-primary/20 flex items-center justify-center">
+                                                                                <span className="text-2xl sm:text-4xl font-bold text-primary">
                                                                                     {bearer.name.charAt(0).toUpperCase()}
                                                                                 </span>
                                                                             </div>
                                                                         </div>
                                                                     )}
                                                                 </div>
-                                                                <div className="p-4 text-center">
-                                                                    <h4 className="text-lg font-bold text-gray-900 mb-1">
+                                                                <div className="p-2 sm:p-4 text-center">
+                                                                    <h4 className="text-sm sm:text-lg font-bold text-gray-900 mb-1 line-clamp-1 sm:line-clamp-none">
                                                                         {bearer.name}
                                                                     </h4>
-                                                                    <p className="text-sm text-primary font-medium capitalize">
+                                                                    <p className="text-xs sm:text-sm text-primary font-medium capitalize">
                                                                         {bearer.role}
                                                                     </p>
                                                                 </div>

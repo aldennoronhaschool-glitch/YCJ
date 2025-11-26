@@ -88,24 +88,24 @@ export default async function AdminDashboard() {
         <div className="grid md:grid-cols-2 gap-6">
           <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader>
-              <CardTitle>Office Bearers</CardTitle>
-              <CardDescription>Manage names, roles, and photos of office bearers</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button asChild className="w-full">
-                <Link href="/admin/office-bearers">Manage Office Bearers</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
-            <CardHeader>
               <CardTitle>Homepage Settings</CardTitle>
               <CardDescription>Edit background images, hero text, service times, welcome note, and contact info</CardDescription>
             </CardHeader>
             <CardContent>
               <Button asChild className="w-full">
                 <Link href="/admin/homepage">Manage Homepage</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle>About Us Page</CardTitle>
+              <CardDescription>Manage content sections, text, and images for the About Us page</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button asChild className="w-full">
+                <Link href="/admin/about">Manage About Us</Link>
               </Button>
             </CardContent>
           </Card>

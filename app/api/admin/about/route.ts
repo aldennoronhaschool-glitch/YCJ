@@ -13,3 +13,23 @@ export async function GET(request: NextRequest) {
         );
     }
 }
+
+export async function POST(request: NextRequest) {
+    try {
+        const admin = await isAdmin();
+        if (!admin) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const body = await request.json();
+        const { createAboutSection } = await import("@/lib/supabase/about");
+
+        const section = await createAboutSection(body);
+        return NextResponse.json(section);
+    } catch (error: any) {
+        return NextResponse.json(
+            { error: error.message || "Failed to create section" },
+            { status: 500 }
+        );
+    }
+}

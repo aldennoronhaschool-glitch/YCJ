@@ -2,8 +2,21 @@ import { isAdmin } from "@/lib/auth";
 import {
   createOfficeBearer,
   updateOfficeBearer,
+  getOfficeBearersPublic,
 } from "@/lib/supabase/officeBearers";
 import { NextResponse } from "next/server";
+
+export async function GET() {
+  try {
+    const bearers = await getOfficeBearersPublic();
+    return NextResponse.json(bearers);
+  } catch (error: any) {
+    return NextResponse.json(
+      { message: error.message || "Failed to fetch office bearers" },
+      { status: 500 }
+    );
+  }
+}
 
 export async function POST(request: Request) {
   try {
@@ -32,7 +45,7 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error("Error in POST /api/admin/office-bearers:", error);
     return NextResponse.json(
-      { 
+      {
         message: error.message || "Internal server error",
         error: error.toString(),
         stack: process.env.NODE_ENV === "development" ? error.stack : undefined
@@ -76,5 +89,3 @@ export async function PATCH(request: Request) {
     );
   }
 }
-
-

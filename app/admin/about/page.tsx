@@ -7,7 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Save, Plus, Trash2, Image as ImageIcon } from "lucide-react";
+import { Loader2, Save, Plus, Trash2, Image as ImageIcon, Users, FileText } from "lucide-react";
+import { OfficeBearersManager } from "@/components/admin/office-bearers-manager";
+import { OfficeBearer } from "@/lib/supabase/officeBearers";
 
 interface AboutSection {
     id: string;
@@ -19,25 +21,37 @@ interface AboutSection {
 }
 
 export default function AdminAboutPage() {
+    const [activeTab, setActiveTab] = useState<'content' | 'bearers'>('content');
     const [sections, setSections] = useState<AboutSection[]>([]);
+    const [bearers, setBearers] = useState<OfficeBearer[]>([]);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState<string | null>(null);
     const { toast } = useToast();
 
     useEffect(() => {
-        fetchSections();
+        fetchData();
     }, []);
 
-    const fetchSections = async () => {
+    const fetchData = async () => {
+        setLoading(true);
         try {
-            const response = await fetch("/api/admin/about");
-            if (!response.ok) throw new Error("Failed to fetch sections");
-            const data = await response.json();
-            setSections(data);
+            const [sectionsRes, bearersRes] = await Promise.all([
+                fetch("/api/admin/about"),
+                fetch("/api/admin/office-bearers")
+            ]);
+
+            if (!sectionsRes.ok) throw new Error("Failed to fetch sections");
+            if (!bearersRes.ok) throw new Error("Failed to fetch office bearers");
+
+            const sectionsData = await sectionsRes.json();
+            const bearersData = await bearersRes.json();
+
+            setSections(sectionsData);
+            setBearers(bearersData);
         } catch (error) {
             toast({
                 title: "Error",
-                description: "Failed to load about sections",
+                description: "Failed to load data",
                 variant: "destructive",
             });
         } finally {
@@ -60,7 +74,7 @@ export default function AdminAboutPage() {
                 title: "Success",
                 description: "Section updated successfully",
             });
-            fetchSections();
+            fetchData();
         } catch (error) {
             toast({
                 title: "Error",
@@ -69,6 +83,62 @@ export default function AdminAboutPage() {
             });
         } finally {
             setSaving(null);
+        }
+    };
+
+    const handleCreate = async () => {
+        try {
+            const newSection = {
+                section_key: `section-${Date.now()}`,
+                title: "New Section",
+                content: "",
+                image_url: null,
+                order_index: sections.length,
+            };
+
+            const response = await fetch("/api/admin/about", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newSection),
+            });
+
+            if (!response.ok) throw new Error("Failed to create section");
+
+            toast({
+                title: "Success",
+                description: "New section created",
+            });
+            fetchData();
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Failed to create section",
+                variant: "destructive",
+            });
+        }
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm("Are you sure you want to delete this section?")) return;
+
+        try {
+            const response = await fetch(`/api/admin/about/${id}`, {
+                method: "DELETE",
+            });
+
+            if (!response.ok) throw new Error("Failed to delete section");
+
+            toast({
+                title: "Success",
+                description: "Section deleted successfully",
+            });
+            fetchData();
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Failed to delete section",
+                variant: "destructive",
+            });
         }
     };
 
@@ -117,106 +187,164 @@ export default function AdminAboutPage() {
     }
 
     return (
-        <div className="container mx-auto py-8 px-4">
+        <div className="container mx-auto pt-24 pb-8 px-4">
             <div className="mb-8">
                 <h1 className="text-3xl font-bold text-gray-900">Manage About Us Page</h1>
-                <p className="text-gray-600 mt-2">Edit the content sections for the About Us page</p>
+                <p className="text-gray-600 mt-2">Edit content and office bearers</p>
             </div>
 
-            <div className="space-y-6">
-                {sections.map((section) => (
-                    <Card key={section.id}>
-                        <CardHeader>
-                            <CardTitle className="flex items-center justify-between">
-                                <span className="uppercase">{section.section_key}</span>
-                                <Button
-                                    onClick={() => handleUpdate(section)}
-                                    disabled={saving === section.id}
-                                    size="sm"
-                                >
-                                    {saving === section.id ? (
-                                        <>
-                                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                            Saving...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Save className="w-4 h-4 mr-2" />
-                                            Save
-                                        </>
-                                    )}
-                                </Button>
-                            </CardTitle>
-                            <CardDescription>Section order: {section.order_index}</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div>
-                                <Label htmlFor={`title-${section.id}`}>Title</Label>
-                                <Input
-                                    id={`title-${section.id}`}
-                                    value={section.title || ""}
-                                    onChange={(e) => handleFieldChange(section.id, "title", e.target.value)}
-                                    placeholder="Section title"
-                                />
-                            </div>
+            <div className="flex gap-4 mb-8 border-b pb-4">
+                <Button
+                    variant={activeTab === 'content' ? 'default' : 'outline'}
+                    onClick={() => setActiveTab('content')}
+                    className="flex items-center gap-2"
+                >
+                    <FileText className="w-4 h-4" />
+                    Content Sections
+                </Button>
+                <Button
+                    variant={activeTab === 'bearers' ? 'default' : 'outline'}
+                    onClick={() => setActiveTab('bearers')}
+                    className="flex items-center gap-2"
+                >
+                    <Users className="w-4 h-4" />
+                    Office Bearers
+                </Button>
+            </div>
 
-                            <div>
-                                <Label htmlFor={`content-${section.id}`}>Content</Label>
-                                <Textarea
-                                    id={`content-${section.id}`}
-                                    value={section.content || ""}
-                                    onChange={(e) => handleFieldChange(section.id, "content", e.target.value)}
-                                    placeholder="Section content"
-                                    rows={6}
-                                />
-                            </div>
+            {activeTab === 'content' ? (
+                <>
+                    <div className="flex justify-end mb-6">
+                        <Button onClick={handleCreate}>
+                            <Plus className="w-4 h-4 mr-2" />
+                            Add Section
+                        </Button>
+                    </div>
 
-                            <div>
-                                <Label htmlFor={`image-${section.id}`}>Image</Label>
-                                <div className="flex items-center gap-4">
-                                    <Input
-                                        id={`image-${section.id}`}
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={(e) => {
-                                            const file = e.target.files?.[0];
-                                            if (file) handleImageUpload(section.id, file);
-                                        }}
-                                    />
-                                    {section.image_url && (
-                                        <div className="relative w-20 h-20 rounded overflow-hidden border">
-                                            <img
-                                                src={section.image_url}
-                                                alt="Preview"
-                                                className="w-full h-full object-cover"
+                    <div className="space-y-6">
+                        {sections.map((section) => (
+                            <Card key={section.id}>
+                                <CardHeader>
+                                    <CardTitle className="flex items-center justify-between">
+                                        <div className="flex items-center gap-4">
+                                            <span className="uppercase text-sm bg-gray-100 px-2 py-1 rounded">
+                                                {section.section_key}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <Button
+                                                onClick={() => handleUpdate(section)}
+                                                disabled={saving === section.id}
+                                                size="sm"
+                                            >
+                                                {saving === section.id ? (
+                                                    <>
+                                                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                                        Saving...
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Save className="w-4 h-4 mr-2" />
+                                                        Save
+                                                    </>
+                                                )}
+                                            </Button>
+                                            <Button
+                                                onClick={() => handleDelete(section.id)}
+                                                variant="destructive"
+                                                size="sm"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </Button>
+                                        </div>
+                                    </CardTitle>
+                                    <CardDescription>Section order: {section.order_index}</CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <Label htmlFor={`key-${section.id}`}>Section Key (Unique ID)</Label>
+                                            <Input
+                                                id={`key-${section.id}`}
+                                                value={section.section_key}
+                                                onChange={(e) => handleFieldChange(section.id, "section_key", e.target.value)}
+                                                placeholder="unique-key"
                                             />
                                         </div>
-                                    )}
-                                </div>
-                                {section.image_url && (
-                                    <Input
-                                        value={section.image_url}
-                                        onChange={(e) => handleFieldChange(section.id, "image_url", e.target.value)}
-                                        placeholder="Or enter image URL"
-                                        className="mt-2"
-                                    />
-                                )}
-                            </div>
+                                        <div>
+                                            <Label htmlFor={`order-${section.id}`}>Display Order</Label>
+                                            <Input
+                                                id={`order-${section.id}`}
+                                                type="number"
+                                                value={section.order_index}
+                                                onChange={(e) => handleFieldChange(section.id, "order_index", parseInt(e.target.value))}
+                                                min="0"
+                                            />
+                                        </div>
+                                    </div>
 
-                            <div>
-                                <Label htmlFor={`order-${section.id}`}>Display Order</Label>
-                                <Input
-                                    id={`order-${section.id}`}
-                                    type="number"
-                                    value={section.order_index}
-                                    onChange={(e) => handleFieldChange(section.id, "order_index", parseInt(e.target.value))}
-                                    min="0"
-                                />
-                            </div>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
+                                    <div>
+                                        <Label htmlFor={`title-${section.id}`}>Title</Label>
+                                        <Input
+                                            id={`title-${section.id}`}
+                                            value={section.title || ""}
+                                            onChange={(e) => handleFieldChange(section.id, "title", e.target.value)}
+                                            placeholder="Section title"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <Label htmlFor={`content-${section.id}`}>Content</Label>
+                                        <Textarea
+                                            id={`content-${section.id}`}
+                                            value={section.content || ""}
+                                            onChange={(e) => handleFieldChange(section.id, "content", e.target.value)}
+                                            placeholder="Section content"
+                                            rows={6}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <Label htmlFor={`image-${section.id}`}>Image</Label>
+                                        <div className="flex items-center gap-4 mt-2">
+                                            <div className="flex-1">
+                                                <Input
+                                                    id={`image-${section.id}`}
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={(e) => {
+                                                        const file = e.target.files?.[0];
+                                                        if (file) handleImageUpload(section.id, file);
+                                                    }}
+                                                />
+                                                {section.image_url && (
+                                                    <Input
+                                                        value={section.image_url}
+                                                        onChange={(e) => handleFieldChange(section.id, "image_url", e.target.value)}
+                                                        placeholder="Or enter image URL"
+                                                        className="mt-2"
+                                                    />
+                                                )}
+                                            </div>
+                                            {section.image_url && (
+                                                <div className="relative w-32 h-32 rounded-lg overflow-hidden border bg-gray-50">
+                                                    <img
+                                                        src={section.image_url}
+                                                        alt="Preview"
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                </>
+            ) : (
+                <OfficeBearersManager initialBearers={bearers} />
+            )}
         </div>
     );
 }
