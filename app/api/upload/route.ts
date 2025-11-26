@@ -37,6 +37,33 @@ export async function POST(request: Request) {
 
     // Determine folder path
     let folderPath = folder || "uploads";
+
+    // Special handling for office bearers - upload to Supabase Storage
+    if (folder === "office-bearers") {
+      const supabase = createAdminClient();
+      const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, "_")}`;
+
+      // Upload to 'office-bearers' bucket
+      const { data, error } = await supabase.storage
+        .from("office-bearers")
+        .upload(fileName, buffer, {
+          contentType: file.type,
+          upsert: true
+        });
+
+      if (error) {
+        console.error("Supabase storage upload error:", error);
+        throw new Error(`Supabase upload failed: ${error.message}`);
+      }
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from("office-bearers")
+        .getPublicUrl(fileName);
+
+      return NextResponse.json({ url: publicUrl });
+    }
+
     if (folder === "gallery") {
       if (customEventName) {
         // Sanitize folder name: remove special chars, replace spaces with underscores
