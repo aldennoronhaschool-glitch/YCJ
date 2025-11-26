@@ -41,6 +41,24 @@ export async function POST(request: Request) {
     // Special handling for office bearers - upload to Supabase Storage
     if (folder === "office-bearers") {
       const supabase = createAdminClient();
+
+      // Check if bucket exists, create if it doesn't
+      const { data: buckets } = await supabase.storage.listBuckets();
+      const bucketExists = buckets?.some(b => b.name === "office-bearers");
+
+      if (!bucketExists) {
+        console.log("Creating office-bearers bucket...");
+        const { error: bucketError } = await supabase.storage.createBucket("office-bearers", {
+          public: true,
+          fileSizeLimit: 5242880, // 5MB
+        });
+
+        if (bucketError) {
+          console.error("Failed to create bucket:", bucketError);
+          throw new Error(`Failed to create bucket: ${bucketError.message}`);
+        }
+      }
+
       const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, "_")}`;
 
       // Upload to 'office-bearers' bucket
