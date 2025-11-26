@@ -234,21 +234,6 @@ export default async function HomePage() {
                   <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 rounded-full bg-primary/10 flex items-center justify-center">
                     <Users className="w-6 h-6 md:w-8 md:h-8 text-primary" />
                   </div>
-                  <CardTitle className="text-base md:text-lg">Office Bearers</CardTitle>
-                  <CardDescription className="text-xs md:text-sm">Meet our leaders</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button asChild className="w-full">
-                    <Link href="/office-bearers">View Office Bearers</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center hover:shadow-lg transition-shadow border border-gray-200">
-                <CardHeader className="pb-3 md:pb-6">
-                  <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Trophy className="w-6 h-6 md:w-8 md:h-8 text-primary" />
-                  </div>
                   <CardTitle className="text-base md:text-lg">Competitions</CardTitle>
                   <CardDescription className="text-xs md:text-sm">Register for competitions</CardDescription>
                 </CardHeader>
