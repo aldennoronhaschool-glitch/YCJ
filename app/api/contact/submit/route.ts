@@ -59,6 +59,27 @@ export async function POST(request: NextRequest) {
             message_body: body.message_body.trim(),
         });
 
+        // Send email notification to admin (non-blocking)
+        try {
+            const { sendAdminNotification } = await import('@/lib/email/notifications');
+            await sendAdminNotification({
+                first_name: body.first_name.trim(),
+                last_name: body.last_name.trim(),
+                gender: body.gender,
+                email: body.email.trim().toLowerCase(),
+                phone: body.phone.trim(),
+                city: body.city.trim(),
+                connection: body.connection,
+                message_title: body.message_title.trim(),
+                message_body: body.message_body.trim(),
+            });
+            console.log('Admin notification sent successfully');
+        } catch (emailError) {
+            // Log the error but don't fail the request
+            console.error('Failed to send admin notification email:', emailError);
+            // Continue - form submission was successful even if email failed
+        }
+
         return NextResponse.json({
             success: true,
             message: "Thank you for contacting us! We'll get back to you soon.",

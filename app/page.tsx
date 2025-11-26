@@ -17,18 +17,7 @@ export default async function HomePage() {
   const settings = await getHomepageSettings();
 
   // Fetch recent gallery folders from ImageKit
-  let recentGalleryFolders: any[] = [];
-  try {
-    const response = await fetch(`/api/imagekit/recent-folders?limit=4`, {
-      cache: 'no-store'
-    });
-    if (response.ok) {
-      const data = await response.json();
-      recentGalleryFolders = data.folders || [];
-    }
-  } catch (error) {
-    console.error("Error fetching gallery folders:", error);
-  }
+  const recentGalleryFolders = await getRecentGalleryFolders(4);
 
   const heroTitle = settings.hero_title || "Youth of Christha Jyothi";
   const heroSubtitle = settings.hero_subtitle || "CSI Christha Jyothi Church - Building a vibrant community of faith, fellowship, and service";
