@@ -95,6 +95,7 @@ export function Navbar() {
     { name: "ABOUT US", href: "/about" },
     { name: "MINISTRIES", href: "/ministries" },
     { name: "RESOURCES", href: "/resources" },
+    { name: "VIDEOS", href: "/videos" },
     { name: "GIVE", href: "/give" },
     { name: "CONTACT", href: "/contact" },
   ];

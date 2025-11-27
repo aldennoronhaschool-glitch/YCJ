@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, Users, Image as ImageIcon, Trophy, Clock, MapPin, Mail, Phone } from "lucide-react";
+import { Calendar, Users, Image as ImageIcon, Trophy, Clock, MapPin, Mail, Phone, Youtube, Play } from "lucide-react";
 import { getLatestEvents } from "@/lib/supabase/events";
 import { getAnnouncements } from "@/lib/supabase/announcements";
 import { getHomepageSettings } from "@/lib/supabase/homepage";
 import { getRecentGalleryFolders } from "@/lib/supabase/gallery";
+import { getYouTubeVideosByType, getYouTubeWatchUrl } from "@/lib/supabase/youtube";
 import { Navbar } from "@/components/navbar";
 import { Logo } from "@/components/logo";
 import Image from "next/image";
@@ -18,6 +19,13 @@ export default async function HomePage() {
 
   // Fetch recent gallery folders from ImageKit
   const recentGalleryFolders = await getRecentGalleryFolders(4);
+
+  // Fetch YouTube videos - get a mix of both types
+  const livestreams = await getYouTubeVideosByType('livestream', 2);
+  const songCovers = await getYouTubeVideosByType('song_cover', 4);
+
+  // Combine and limit to 6 total videos
+  const allVideos = [...livestreams, ...songCovers].slice(0, 6);
 
   const heroTitle = settings.hero_title || "Youth of Christha Jyothi";
   const heroSubtitle = settings.hero_subtitle || "CSI Christha Jyothi Church - Building a vibrant community of faith, fellowship, and service";
@@ -151,6 +159,79 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+
+        {/* YouTube Videos Section */}
+        {allVideos.length > 0 && (
+          <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
+            <div className="max-w-7xl mx-auto">
+              {/* Enhanced Header Box */}
+              <div className="relative mb-10">
+                <div className="absolute inset-0 bg-gradient-to-r from-red-500 via-red-600 to-orange-500 rounded-2xl blur-lg opacity-20"></div>
+                <div className="relative bg-gradient-to-r from-red-500 via-red-600 to-orange-500 rounded-2xl p-6 md:p-8 text-white shadow-xl">
+                  <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="text-center md:text-left">
+                      <div className="inline-flex items-center gap-2 mb-2">
+                        <div className="p-2 bg-white/20 backdrop-blur-sm rounded-full">
+                          <Youtube className="w-6 h-6 md:w-7 md:h-7" />
+                        </div>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">OUR VIDEOS</h2>
+                      </div>
+                      <p className="text-base md:text-lg text-white/95">
+                        Watch our worship services, livestreams, and heartfelt song covers
+                      </p>
+                    </div>
+                    <Button
+                      asChild
+                      size="default"
+                      className="bg-white text-red-600 hover:bg-gray-100 shadow-md px-6 py-5 font-bold whitespace-nowrap"
+                    >
+                      <Link href="/videos">
+                        <Play className="w-4 h-4 mr-2" />
+                        View All Videos
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Combined Videos Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {allVideos.map((video) => (
+                  <Card key={video.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                    <div className="relative aspect-video bg-gray-100">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${video.video_id}`}
+                        title={video.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="absolute inset-0 w-full h-full"
+                      />
+                    </div>
+                    <CardHeader>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className={`text-xs font-semibold px-2 py-1 rounded-full ${video.video_type === 'livestream'
+                          ? 'bg-red-100 text-red-700'
+                          : 'bg-purple-100 text-purple-700'
+                          }`}>
+                          {video.video_type === 'livestream' ? 'Livestream' : 'Song Cover'}
+                        </span>
+                      </div>
+                      <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
+                        {video.title}
+                      </CardTitle>
+                      {video.description && (
+                        <CardDescription className="line-clamp-2">
+                          {video.description}
+                        </CardDescription>
+                      )}
+                    </CardHeader>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
 
         {/* Recent Gallery Updates */}
         {recentGalleryFolders.length > 0 && (
