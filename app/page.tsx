@@ -6,7 +6,7 @@ import { getLatestEvents } from "@/lib/supabase/events";
 import { getAnnouncements } from "@/lib/supabase/announcements";
 import { getHomepageSettings } from "@/lib/supabase/homepage";
 import { getRecentGalleryFolders } from "@/lib/supabase/gallery";
-import { getYouTubeVideosByType, getYouTubeWatchUrl } from "@/lib/supabase/youtube";
+import { getFeaturedYouTubeVideos, getYouTubeWatchUrl } from "@/lib/supabase/youtube";
 import { Navbar } from "@/components/navbar";
 import { Logo } from "@/components/logo";
 import Image from "next/image";
@@ -20,12 +20,8 @@ export default async function HomePage() {
   // Fetch recent gallery folders from ImageKit
   const recentGalleryFolders = await getRecentGalleryFolders(4);
 
-  // Fetch YouTube videos - get a mix of both types
-  const livestreams = await getYouTubeVideosByType('livestream', 2);
-  const songCovers = await getYouTubeVideosByType('song_cover', 4);
-
-  // Combine and limit to 6 total videos
-  const allVideos = [...livestreams, ...songCovers].slice(0, 6);
+  // Fetch only featured YouTube videos
+  const featuredVideos = await getFeaturedYouTubeVideos(6);
 
   const heroTitle = settings.hero_title || "Youth of Christha Jyothi";
   const heroSubtitle = settings.hero_subtitle || "CSI Christha Jyothi Church - Building a vibrant community of faith, fellowship, and service";
@@ -161,7 +157,7 @@ export default async function HomePage() {
         </section>
 
         {/* YouTube Videos Section */}
-        {allVideos.length > 0 && (
+        {featuredVideos.length > 0 && (
           <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
             <div className="max-w-7xl mx-auto">
               {/* Enhanced Header Box */}
@@ -196,7 +192,7 @@ export default async function HomePage() {
 
               {/* Combined Videos Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                {allVideos.map((video) => (
+                {featuredVideos.map((video) => (
                   <Card key={video.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
                     <div className="relative aspect-video bg-gray-100">
                       <iframe
