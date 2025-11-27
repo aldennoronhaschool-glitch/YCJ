@@ -53,7 +53,7 @@ export default async function AboutPage() {
             <Navbar />
             <div className="min-h-screen bg-white">
                 {/* Hero Section */}
-                <section className="relative pt-32 pb-16 px-4 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+                <section className={`relative pt-32 pb-16 px-4 ${heroSection?.image_url ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50'}`}>
                     {heroSection?.image_url && (
                         <div className="absolute inset-0 z-0">
                             <Image
@@ -63,15 +63,15 @@ export default async function AboutPage() {
                                 className="object-cover"
                                 priority
                             />
-                            <div className="absolute inset-0 bg-white/80" />
+                            <div className="absolute inset-0 bg-black/60" />
                         </div>
                     )}
                     <div className="relative z-10 max-w-4xl mx-auto text-center">
-                        <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gray-900">
+                        <h1 className={`text-4xl md:text-6xl font-bold mb-4 ${heroSection?.image_url ? 'text-white' : 'text-gray-900'}`}>
                             {heroSection?.title || "About Us"}
                         </h1>
                         {heroSection?.content && (
-                            <p className="text-xl text-gray-700 max-w-2xl mx-auto">
+                            <p className={`text-xl max-w-2xl mx-auto ${heroSection?.image_url ? 'text-gray-200' : 'text-gray-700'}`}>
                                 {heroSection.content}
                             </p>
                         )}
