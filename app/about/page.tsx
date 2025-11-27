@@ -89,12 +89,13 @@ export default async function AboutPage() {
                             >
                                 {section.image_url && (
                                     <div className="w-full md:w-1/2">
-                                        <div className="relative h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
+                                        <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-100">
                                             <Image
                                                 src={section.image_url}
                                                 alt={section.title || ""}
-                                                fill
-                                                className="object-cover"
+                                                width={800}
+                                                height={600}
+                                                className="w-full h-auto object-cover"
                                             />
                                         </div>
                                     </div>

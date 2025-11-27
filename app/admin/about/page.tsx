@@ -120,6 +120,57 @@ export default function AdminAboutPage() {
         }
     };
 
+    const handleInitialize = async () => {
+        setLoading(true);
+        try {
+            const defaultSections = [
+                {
+                    section_key: "hero",
+                    title: "About Us",
+                    content: "Welcome to Youth of Christha Jyothi",
+                    image_url: null,
+                    order_index: 0,
+                },
+                {
+                    section_key: "mission",
+                    title: "Our Mission",
+                    content: "To build a vibrant community of faith, fellowship, and service among the youth of CSI Christha Jyothi Church.",
+                    image_url: null,
+                    order_index: 1,
+                },
+                {
+                    section_key: "vision",
+                    title: "Our Vision",
+                    content: "Empowering young people to grow in their faith and make a positive impact in their communities.",
+                    image_url: null,
+                    order_index: 2,
+                },
+            ];
+
+            for (const section of defaultSections) {
+                await fetch("/api/admin/about", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(section),
+                });
+            }
+
+            toast({
+                title: "Success",
+                description: "Default content initialized",
+            });
+            fetchData();
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Failed to initialize content",
+                variant: "destructive",
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleDelete = async (id: string) => {
         if (!confirm("Are you sure you want to delete this section?")) return;
 
@@ -216,7 +267,13 @@ export default function AdminAboutPage() {
 
             {activeTab === 'content' ? (
                 <>
-                    <div className="flex justify-end mb-6">
+                    <div className="flex justify-end mb-6 gap-4">
+                        {sections.length === 0 && (
+                            <Button onClick={handleInitialize} variant="outline">
+                                <Save className="w-4 h-4 mr-2" />
+                                Initialize Default Content
+                            </Button>
+                        )}
                         <Button onClick={handleCreate}>
                             <Plus className="w-4 h-4 mr-2" />
                             Add Section
@@ -225,13 +282,18 @@ export default function AdminAboutPage() {
 
                     <div className="space-y-6">
                         {sections.map((section) => (
-                            <Card key={section.id}>
+                            <Card key={section.id} className={section.section_key === 'hero' ? 'border-primary/50 bg-primary/5' : ''}>
                                 <CardHeader>
                                     <CardTitle className="flex items-center justify-between">
                                         <div className="flex items-center gap-4">
                                             <span className="uppercase text-sm bg-gray-100 px-2 py-1 rounded">
                                                 {section.section_key}
                                             </span>
+                                            {section.section_key === 'hero' && (
+                                                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-normal">
+                                                    Main Header
+                                                </span>
+                                            )}
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <Button
@@ -307,7 +369,9 @@ export default function AdminAboutPage() {
                                     </div>
 
                                     <div>
-                                        <Label htmlFor={`image-${section.id}`}>Image</Label>
+                                        <Label htmlFor={`image-${section.id}`}>
+                                            {section.section_key === 'hero' ? 'Background Image (Recommended: 1920x1080)' : 'Image'}
+                                        </Label>
                                         <div className="flex items-center gap-4 mt-2">
                                             <div className="flex-1">
                                                 <Input
