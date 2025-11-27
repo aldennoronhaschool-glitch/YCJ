@@ -195,7 +195,7 @@ export default async function HomePage() {
               </div>
 
               {/* Combined Videos Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 {allVideos.map((video) => (
                   <Card key={video.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
                     <div className="relative aspect-video bg-gray-100">
@@ -207,20 +207,20 @@ export default async function HomePage() {
                         className="absolute inset-0 w-full h-full"
                       />
                     </div>
-                    <CardHeader>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className={`text-xs font-semibold px-2 py-1 rounded-full ${video.video_type === 'livestream'
+                    <CardHeader className="p-3 md:p-6">
+                      <div className="flex items-center gap-2 mb-1 md:mb-2">
+                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${video.video_type === 'livestream'
                           ? 'bg-red-100 text-red-700'
                           : 'bg-purple-100 text-purple-700'
                           }`}>
                           {video.video_type === 'livestream' ? 'Livestream' : 'Song Cover'}
                         </span>
                       </div>
-                      <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
+                      <CardTitle className="text-sm md:text-lg line-clamp-2 group-hover:text-primary transition-colors">
                         {video.title}
                       </CardTitle>
                       {video.description && (
-                        <CardDescription className="line-clamp-2">
+                        <CardDescription className="line-clamp-2 text-xs md:text-sm">
                           {video.description}
                         </CardDescription>
                       )}
