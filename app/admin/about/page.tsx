@@ -268,6 +268,35 @@ export default function AdminAboutPage() {
             {activeTab === 'content' ? (
                 <>
                     <div className="flex justify-end mb-6 gap-4">
+                        {!sections.some(s => s.section_key === 'hero') && (
+                            <Button
+                                onClick={async () => {
+                                    try {
+                                        const response = await fetch("/api/admin/about", {
+                                            method: "POST",
+                                            headers: { "Content-Type": "application/json" },
+                                            body: JSON.stringify({
+                                                section_key: "hero",
+                                                title: "About Us",
+                                                content: "Welcome to Youth of Christha Jyothi",
+                                                image_url: null,
+                                                order_index: -1,
+                                            }),
+                                        });
+                                        if (!response.ok) throw new Error("Failed to create hero section");
+                                        toast({ title: "Success", description: "Hero section created" });
+                                        fetchData();
+                                    } catch (error) {
+                                        toast({ title: "Error", description: "Failed to create hero section", variant: "destructive" });
+                                    }
+                                }}
+                                variant="outline"
+                                className="border-primary text-primary hover:bg-primary/10"
+                            >
+                                <ImageIcon className="w-4 h-4 mr-2" />
+                                Add Hero Section (Background)
+                            </Button>
+                        )}
                         {sections.length === 0 && (
                             <Button onClick={handleInitialize} variant="outline">
                                 <Save className="w-4 h-4 mr-2" />

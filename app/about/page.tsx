@@ -60,8 +60,10 @@ export default async function AboutPage() {
                                 src={heroSection.image_url}
                                 alt="About Us"
                                 fill
-                                className="object-cover"
+                                className="object-cover object-center"
                                 priority
+                                sizes="100vw"
+                                quality={90}
                             />
                             <div className="absolute inset-0 bg-black/60" />
                         </div>
