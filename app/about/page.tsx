@@ -86,11 +86,11 @@ export default async function AboutPage() {
                         {otherSections.map((section, index) => (
                             <div
                                 key={section.id}
-                                className={`flex flex-col ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                                    } gap-8 items-center`}
+                                className={`flex ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"
+                                    } gap-4 md:gap-8 items-center`}
                             >
                                 {section.image_url && (
-                                    <div className="w-full md:w-1/2">
+                                    <div className="w-1/2">
                                         <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-100">
                                             <Image
                                                 src={section.image_url}
@@ -102,14 +102,14 @@ export default async function AboutPage() {
                                         </div>
                                     </div>
                                 )}
-                                <div className={`w-full ${section.image_url ? "md:w-1/2" : ""}`}>
+                                <div className={`w-full ${section.image_url ? "w-1/2" : ""}`}>
                                     {section.title && (
-                                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                                        <h2 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 md:mb-4">
                                             {section.title}
                                         </h2>
                                     )}
                                     {section.content && (
-                                        <div className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
+                                        <div className="text-sm md:text-base lg:text-lg text-gray-700 leading-relaxed whitespace-pre-line">
                                             {section.content}
                                         </div>
                                     )}
