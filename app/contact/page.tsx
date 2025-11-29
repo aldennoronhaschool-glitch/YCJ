@@ -42,12 +42,12 @@ export default async function ContactPage() {
                     <div className="max-w-6xl mx-auto">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                             {/* Left Side - Contact Form */}
-                            <div className="order-2 md:order-1">
+                            <div className="order-1 md:order-1">
                                 <ContactForm />
                             </div>
 
                             {/* Right Side - Contact Information */}
-                            <div className="order-1 md:order-2 space-y-6 md:space-y-8">
+                            <div className="order-3 md:order-2 space-y-6 md:space-y-8">
                                 <div className="bg-gray-50 p-6 sm:p-8 rounded-lg">
                                     <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">Get In Touch</h2>
 
@@ -108,7 +108,7 @@ export default async function ContactPage() {
                         </div>
 
                         {/* Google Maps Section - Mobile Optimized */}
-                        <div className="mt-12 sm:mt-16">
+                        <div className="mt-12 sm:mt-16 order-2">
                             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">Find Us</h2>
                             <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-lg overflow-hidden shadow-lg border border-gray-200">
                                 <iframe
