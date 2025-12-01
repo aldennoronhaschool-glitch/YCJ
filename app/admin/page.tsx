@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { getAllEvents } from "@/lib/supabase/events";
 import { getAllRegistrations } from "@/lib/supabase/registrations";
 import { getAllCompetitions } from "@/lib/supabase/competitions";
+import { getAllEventRegistrations } from "@/lib/supabase/event-registrations";
 
 export default async function AdminDashboard() {
   // Check authentication and admin status
@@ -30,6 +31,7 @@ export default async function AdminDashboard() {
   const events = await getAllEvents(true);
   const registrations = await getAllRegistrations();
   const competitions = await getAllCompetitions();
+  const eventRegistrations = await getAllEventRegistrations();
 
   return (
     <div className="min-h-screen bg-white py-12 px-4">
@@ -75,12 +77,12 @@ export default async function AdminDashboard() {
 
           <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Gallery</CardTitle>
-              <ImageIcon className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">Event Registrations</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">-</div>
-              <p className="text-xs text-muted-foreground">Manage images</p>
+              <div className="text-2xl font-bold">{eventRegistrations.length}</div>
+              <p className="text-xs text-muted-foreground">Event registrations</p>
             </CardContent>
           </Card>
         </div>
@@ -154,6 +156,18 @@ export default async function AdminDashboard() {
             <CardContent>
               <Button asChild className="w-full">
                 <Link href="/admin/competitions">Manage Competitions</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-gray-200 hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle>Event Registrations</CardTitle>
+              <CardDescription>View and manage event registrations from users</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button asChild className="w-full">
+                <Link href="/admin/event-registrations">Manage Event Registrations</Link>
               </Button>
             </CardContent>
           </Card>

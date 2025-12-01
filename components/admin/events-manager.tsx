@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Event } from "@/lib/supabase/events";
-import { Edit, Trash2, Eye, EyeOff } from "lucide-react";
+import { Edit, Trash2, Eye, EyeOff, Users, Settings } from "lucide-react";
 import Link from "next/link";
 
 export function EventsManager({ initialEvents }: { initialEvents: Event[] }) {
@@ -109,6 +109,16 @@ export function EventsManager({ initialEvents }: { initialEvents: Event[] }) {
                       ) : (
                         <Eye className="w-4 h-4" />
                       )}
+                    </Button>
+                    <Button variant="outline" size="icon" asChild title="Manage Registrations">
+                      <Link href={`/admin/event-registrations?event=${event.id}`}>
+                        <Users className="w-4 h-4" />
+                      </Link>
+                    </Button>
+                    <Button variant="outline" size="icon" asChild title="Customize Registration Form">
+                      <Link href={`/admin/events/${event.id}/registration-fields`}>
+                        <Settings className="w-4 h-4" />
+                      </Link>
                     </Button>
                     <Button variant="outline" size="icon" asChild>
                       <Link href={`/admin/events/${event.id}/edit`}>

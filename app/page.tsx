@@ -140,9 +140,14 @@ export default async function HomePage() {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <Button asChild variant="outline" className="w-full">
-                        <Link href={`/events/${event.id}`}>View Details</Link>
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button asChild variant="outline" className="flex-1">
+                          <Link href={`/events/${event.id}`}>View Details</Link>
+                        </Button>
+                        <Button asChild className="flex-1">
+                          <Link href={`/events/${event.id}/register`}>Register</Link>
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 ))}

@@ -4,7 +4,9 @@ import { getGalleryImages } from "@/lib/supabase/gallery";
 import Image from "next/image";
 import { Calendar, MapPin, Clock } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/navbar";
+import Link from "next/link";
 
 export default async function EventDetailPage({
   params,
@@ -23,68 +25,75 @@ export default async function EventDetailPage({
     <>
       <Navbar />
       <div className="min-h-screen bg-white py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-        {event.banner_url && (
-          <div className="relative h-96 w-full rounded-lg overflow-hidden mb-8 shadow-md">
-            <Image
-              src={event.banner_url}
-              alt={event.title}
-              fill
-              className="object-cover"
-            />
-          </div>
-        )}
+        <div className="max-w-4xl mx-auto">
+          {event.banner_url && (
+            <div className="relative h-96 w-full rounded-lg overflow-hidden mb-8 shadow-md">
+              <Image
+                src={event.banner_url}
+                alt={event.title}
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
 
-        <div className="bg-white rounded-lg shadow-md p-8 mb-8 border border-gray-200">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">{event.title}</h1>
-          
-          <div className="flex flex-wrap gap-4 mb-6 text-gray-600">
-            <div className="flex items-center gap-2">
-              <Calendar className="w-5 h-5" />
-              <span>{new Date(event.date).toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="w-5 h-5" />
-              <span>{event.time}</span>
-            </div>
-            {event.location && (
+          <div className="bg-white rounded-lg shadow-md p-8 mb-8 border border-gray-200">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">{event.title}</h1>
+
+            <div className="flex flex-wrap gap-4 mb-6 text-gray-600">
               <div className="flex items-center gap-2">
-                <MapPin className="w-5 h-5" />
-                <span>{event.location}</span>
+                <Calendar className="w-5 h-5" />
+                <span>{new Date(event.date).toLocaleDateString("en-US", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}</span>
               </div>
-            )}
-          </div>
-
-          <div className="prose max-w-none">
-            <p className="text-gray-700 whitespace-pre-line leading-relaxed">{event.description}</p>
-          </div>
-        </div>
-
-        {galleryImages.length > 0 && (
-          <div className="bg-white rounded-lg shadow-md p-8 border border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Event Gallery</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {galleryImages.map((image) => (
-                <div key={image.id} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer">
-                  <Image
-                    src={image.image_url}
-                    alt="Event photo"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform"
-                  />
+              <div className="flex items-center gap-2">
+                <Clock className="w-5 h-5" />
+                <span>{event.time}</span>
+              </div>
+              {event.location && (
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-5 h-5" />
+                  <span>{event.location}</span>
                 </div>
-              ))}
+              )}
+            </div>
+
+            <div className="prose max-w-none">
+              <p className="text-gray-700 whitespace-pre-line leading-relaxed">{event.description}</p>
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-gray-200">
+              <Button asChild size="lg" className="w-full md:w-auto">
+                <Link href={`/events/${event.id}/register`}>
+                  Register for this Event
+                </Link>
+              </Button>
             </div>
           </div>
-        )}
+
+          {galleryImages.length > 0 && (
+            <div className="bg-white rounded-lg shadow-md p-8 border border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Event Gallery</h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {galleryImages.map((image) => (
+                  <div key={image.id} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer">
+                    <Image
+                      src={image.image_url}
+                      alt="Event photo"
+                      fill
+                      className="object-cover hover:scale-105 transition-transform"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
     </>
   );
 }
-
