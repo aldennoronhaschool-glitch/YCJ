@@ -11,21 +11,30 @@ export default async function AdminEventsPage() {
   return (
     <div className="min-h-screen bg-background py-12 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">Event Management</h1>
-          <p className="text-muted-foreground text-base md:text-lg">Create, update, and manage events</p>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-8">
+          <div>
+            <h1 className="text-3xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">Event Management</h1>
+            <p className="text-muted-foreground text-base md:text-lg">Create, update, and manage events</p>
+          </div>
+          {/* Desktop button */}
+          <Button asChild size="lg" className="hidden sm:flex whitespace-nowrap">
+            <Link href="/admin/events/new">
+              <Plus className="w-5 h-5 mr-2" />
+              New Event
+            </Link>
+          </Button>
         </div>
 
         <EventsManager initialEvents={events} />
 
-        {/* Floating Action Button for New Event */}
+        {/* Floating Action Button for New Event - Mobile Only */}
         <Button
           asChild
           size="lg"
-          className="fixed bottom-6 right-6 rounded-full shadow-2xl h-14 w-14 md:h-16 md:w-16 z-50 hover:scale-110 transition-transform"
+          className="sm:hidden fixed bottom-6 right-6 rounded-full shadow-2xl h-16 w-16 z-50 hover:scale-110 transition-transform"
         >
           <Link href="/admin/events/new" className="flex items-center justify-center">
-            <Plus className="w-6 h-6 md:w-7 md:h-7" />
+            <Plus className="w-7 h-7" />
           </Link>
         </Button>
       </div>
