@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Event } from "@/lib/supabase/events";
-import { Edit, Trash2, Eye, EyeOff, Users, Settings } from "lucide-react";
+import { Edit, Trash2, Eye, EyeOff, Users, Settings, Plus } from "lucide-react";
 import Link from "next/link";
 
 export function EventsManager({ initialEvents }: { initialEvents: Event[] }) {
@@ -206,6 +206,18 @@ export function EventsManager({ initialEvents }: { initialEvents: Event[] }) {
               </CardContent>
             </Card>
           ))}
+        </div>
+      )}
+
+      {/* Add New Event Button at Bottom */}
+      {events.length > 0 && (
+        <div className="mt-6 flex justify-center">
+          <Button asChild size="lg" className="w-full sm:w-auto">
+            <Link href="/admin/events/new">
+              <Plus className="w-5 h-5 mr-2" />
+              Add New Event
+            </Link>
+          </Button>
         </div>
       )}
 

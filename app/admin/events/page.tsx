@@ -27,16 +27,6 @@ export default async function AdminEventsPage() {
 
         <EventsManager initialEvents={events} />
 
-        {/* Floating Action Button for New Event - Mobile Only */}
-        <Button
-          asChild
-          size="lg"
-          className="sm:hidden fixed bottom-6 right-6 rounded-full shadow-2xl h-16 w-16 z-50 hover:scale-110 transition-transform"
-        >
-          <Link href="/admin/events/new" className="flex items-center justify-center">
-            <Plus className="w-7 h-7" />
-          </Link>
-        </Button>
       </div>
     </div>
   );
