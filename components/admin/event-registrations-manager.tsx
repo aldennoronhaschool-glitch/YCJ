@@ -146,22 +146,31 @@ export function EventRegistrationsManager({
                                     <CardContent className="pt-6">
                                         <div className="flex justify-between items-start">
                                             <div className="grid md:grid-cols-2 gap-4 flex-1">
-                                                <div>
-                                                    <p className="text-sm font-medium text-gray-500">Name</p>
-                                                    <p className="text-lg">{registration.name}</p>
-                                                </div>
-                                                <div>
-                                                    <p className="text-sm font-medium text-gray-500">Email</p>
-                                                    <p className="text-lg">{registration.email}</p>
-                                                </div>
-                                                <div>
-                                                    <p className="text-sm font-medium text-gray-500">Phone</p>
-                                                    <p className="text-lg">{registration.phone}</p>
-                                                </div>
-                                                <div>
-                                                    <p className="text-sm font-medium text-gray-500">Age</p>
-                                                    <p className="text-lg">{registration.age}</p>
-                                                </div>
+                                                {/* Only show standard fields if they have values */}
+                                                {registration.name && (
+                                                    <div>
+                                                        <p className="text-sm font-medium text-gray-500">Name</p>
+                                                        <p className="text-lg">{registration.name}</p>
+                                                    </div>
+                                                )}
+                                                {registration.email && (
+                                                    <div>
+                                                        <p className="text-sm font-medium text-gray-500">Email</p>
+                                                        <p className="text-lg">{registration.email}</p>
+                                                    </div>
+                                                )}
+                                                {registration.phone && (
+                                                    <div>
+                                                        <p className="text-sm font-medium text-gray-500">Phone</p>
+                                                        <p className="text-lg">{registration.phone}</p>
+                                                    </div>
+                                                )}
+                                                {registration.age && (
+                                                    <div>
+                                                        <p className="text-sm font-medium text-gray-500">Age</p>
+                                                        <p className="text-lg">{registration.age}</p>
+                                                    </div>
+                                                )}
                                                 <div>
                                                     <p className="text-sm font-medium text-gray-500">Event</p>
                                                     <p className="text-lg">{getEventTitle(registration.event_id)}</p>
