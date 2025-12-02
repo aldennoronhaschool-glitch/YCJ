@@ -186,22 +186,22 @@ export function EventsManager({ initialEvents }: { initialEvents: Event[] }) {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-3">
                 {event.banner_url && (
                   <div
-                    className="mb-4 rounded-lg overflow-hidden border cursor-pointer hover:opacity-90 transition-opacity"
+                    className="rounded-lg overflow-hidden border cursor-pointer hover:opacity-90 transition-opacity"
                     onClick={() => setLightboxImage(event.banner_url!)}
                   >
                     <img
                       src={event.banner_url}
                       alt={event.title}
-                      className="w-full h-48 object-cover"
+                      className="w-full h-40 md:h-48 object-cover"
                     />
                   </div>
                 )}
-                <p className="text-sm text-gray-600 line-clamp-2">{event.description}</p>
+                <p className="text-sm md:text-base text-gray-600 line-clamp-3">{event.description}</p>
                 {event.location && (
-                  <p className="text-sm text-gray-500 mt-2">📍 {event.location}</p>
+                  <p className="text-sm text-gray-500">📍 {event.location}</p>
                 )}
               </CardContent>
             </Card>
