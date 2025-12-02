@@ -194,12 +194,6 @@ export function RegistrationFieldsEditor({
                         <p className="text-sm text-gray-600 mb-2">
                             Customize all fields for this event's registration form. You can make fields optional, reorder them, or delete them entirely.
                         </p>
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
-                            <p className="text-sm text-blue-800">
-                                <strong>💡 Tip:</strong> Avoid creating duplicate fields with similar names (e.g., "Email" and "Email(church)").
-                                Each field label should be unique and descriptive.
-                            </p>
-                        </div>
                         {fields.length === 0 ? (
                             <p className="text-gray-500 text-sm">No fields configured yet. Add fields below to create your registration form.</p>
                         ) : (

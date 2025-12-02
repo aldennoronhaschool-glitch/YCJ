@@ -38,16 +38,35 @@ export function EventRegistrationsManager({
             : registrations.filter((r) => r.event_id === selectedEvent);
 
     const handleDownloadCSV = () => {
-        const headers = ["Name", "Email", "Phone", "Age", "Additional Info", "Event", "Date"];
-        const rows = filteredRegistrations.map((reg) => [
-            reg.name,
-            reg.email,
-            reg.phone,
-            reg.age.toString(),
-            reg.additional_info || "",
-            getEventTitle(reg.event_id),
-            new Date(reg.created_at).toLocaleDateString(),
-        ]);
+        // Collect all unique custom field keys
+        const customKeys = new Set<string>();
+        filteredRegistrations.forEach(reg => {
+            if (reg.custom_fields) {
+                Object.keys(reg.custom_fields).forEach(key => customKeys.add(key));
+            }
+        });
+        const customKeysArray = Array.from(customKeys);
+
+        const headers = ["Name", "Email", "Phone", "Age", "Additional Info", "Event", "Date", ...customKeysArray];
+
+        const rows = filteredRegistrations.map((reg) => {
+            const row = [
+                reg.name || "",
+                reg.email || "",
+                reg.phone || "",
+                reg.age?.toString() || "",
+                reg.additional_info || "",
+                getEventTitle(reg.event_id),
+                new Date(reg.created_at).toLocaleDateString(),
+            ];
+
+            // Add custom field values
+            customKeysArray.forEach(key => {
+                row.push(reg.custom_fields?.[key] ? String(reg.custom_fields[key]) : "");
+            });
+
+            return row;
+        });
 
         const csvContent = [
             headers.join(","),
@@ -159,6 +178,13 @@ export function EventRegistrationsManager({
                                                         <p className="text-lg">{registration.additional_info}</p>
                                                     </div>
                                                 )}
+                                                {/* Render Custom Fields */}
+                                                {registration.custom_fields && Object.entries(registration.custom_fields).map(([key, value]) => (
+                                                    <div key={key}>
+                                                        <p className="text-sm font-medium text-gray-500">{key}</p>
+                                                        <p className="text-lg">{String(value)}</p>
+                                                    </div>
+                                                ))}
                                             </div>
                                             <Button
                                                 variant="outline"
