@@ -8,9 +8,12 @@ const imagekit = new ImageKit({
     urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT || "",
 });
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
-        // List ALL files (no path filter)
+        const { searchParams } = new URL(request.url);
+        const folderPath = searchParams.get('folder') || '';
+
+        // List ALL files
         const files = await new Promise<any[]>((resolve, reject) => {
             imagekit.listFiles(
                 {
@@ -31,30 +34,41 @@ export async function GET() {
 
         console.log("All files from ImageKit:", files.map(f => f.filePath));
 
-        // Filter only gallery files and group by folder
+        // Build the full path to search for
+        const searchPath = folderPath ? `/gallery/${folderPath}/` : '/gallery/';
+        console.log("Searching for path:", searchPath);
+
+        // Group by immediate subfolders and collect images
         const folderMap = new Map<string, any[]>();
+        const imagesList: any[] = [];
+        const subfolderSet = new Set<string>();
 
         files.forEach((file) => {
             const filePath = file.filePath || "";
-            console.log("Processing file path:", filePath);
 
-            // Only process files in /gallery/ folder
-            if (filePath.includes('/gallery/')) {
-                // Extract folder name from path like "/gallery/FolderName/image.jpg"
-                const pathParts = filePath.split('/').filter(Boolean);
+            // Only process files in the current search path
+            if (filePath.startsWith(searchPath)) {
+                // Get the relative path after the search path
+                const relativePath = filePath.substring(searchPath.length);
+                const pathParts = relativePath.split('/').filter(Boolean);
 
-                // Find the index of 'gallery' and get the next part as folder name
-                const galleryIndex = pathParts.indexOf('gallery');
+                if (pathParts.length === 1) {
+                    // This is an image directly in the current folder
+                    imagesList.push({
+                        id: file.fileId,
+                        url: file.url,
+                        name: file.name,
+                        thumbnail: file.thumbnail || file.url,
+                    });
+                } else if (pathParts.length > 1) {
+                    // This is in a subfolder
+                    const subfolderName = pathParts[0];
+                    subfolderSet.add(subfolderName);
 
-                // We need at least: gallery -> FolderName -> FileName
-                // So length must be > galleryIndex + 2
-                if (galleryIndex !== -1 && pathParts.length > galleryIndex + 2) {
-                    const folderName = pathParts[galleryIndex + 1];
-
-                    if (!folderMap.has(folderName)) {
-                        folderMap.set(folderName, []);
+                    if (!folderMap.has(subfolderName)) {
+                        folderMap.set(subfolderName, []);
                     }
-                    folderMap.get(folderName)?.push({
+                    folderMap.get(subfolderName)?.push({
                         id: file.fileId,
                         url: file.url,
                         name: file.name,
@@ -68,21 +82,27 @@ export async function GET() {
         const metadata = await getAllFolderMetadata();
         const metadataMap = new Map(metadata.map(m => [m.folder_name, m.description]));
 
-        // Convert to folders array with metadata
-        const folders = Array.from(folderMap.entries()).map(([name, images]) => ({
-            id: name,
-            name: name,
-            coverImage: images[0]?.url || '',
-            count: images.length,
-            images: images,
-            description: metadataMap.get(name) || null,
-        }));
+        // Convert subfolders to array with metadata
+        const subfolders = Array.from(folderMap.entries()).map(([name, images]) => {
+            const fullFolderPath = folderPath ? `${folderPath}/${name}` : name;
+            return {
+                id: fullFolderPath,
+                name: name,
+                fullPath: fullFolderPath,
+                coverImage: images[0]?.url || '',
+                count: images.length,
+                isFolder: true,
+                description: metadataMap.get(fullFolderPath) || null,
+            };
+        });
 
-        console.log("Folders created:", folders.length);
-        console.log("Folder details:", folders.map(f => ({ name: f.name, count: f.count })));
+        console.log("Subfolders found:", subfolders.length);
+        console.log("Images in current folder:", imagesList.length);
 
         return NextResponse.json({
-            folders,
+            currentPath: folderPath,
+            subfolders,
+            images: imagesList,
             totalFiles: files.length,
             galleryFiles: files.filter(f => f.filePath?.includes('/gallery/')).length
         });

@@ -5,12 +5,40 @@ import { Calendar, Users, Image as ImageIcon, Trophy, Clock, MapPin, Mail, Phone
 import { getLatestEvents } from "@/lib/supabase/events";
 import { getAnnouncements } from "@/lib/supabase/announcements";
 import { getHomepageSettings } from "@/lib/supabase/homepage";
-import { getRecentGalleryFolders } from "@/lib/supabase/gallery";
 import { getFeaturedYouTubeVideos, getYouTubeWatchUrl } from "@/lib/supabase/youtube";
 import { Navbar } from "@/components/navbar";
 import { Logo } from "@/components/logo";
 import Image from "next/image";
 import { ImageLightbox } from "@/components/ui/image-lightbox";
+
+interface GalleryFolder {
+  id: string;
+  name: string;
+  coverImage: string;
+  count: number;
+  description?: string | null;
+  latestImageDate?: string;
+}
+
+async function getRecentGalleryFoldersFromImageKit(limit: number = 6): Promise<GalleryFolder[]> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const response = await fetch(`${baseUrl}/api/imagekit/recent-folders?limit=${limit}`, {
+      cache: 'no-store'
+    });
+
+    if (!response.ok) {
+      console.error('Failed to fetch gallery folders from ImageKit');
+      return [];
+    }
+
+    const data = await response.json();
+    return data.folders || [];
+  } catch (error) {
+    console.error('Error fetching gallery folders:', error);
+    return [];
+  }
+}
 
 export default async function HomePage() {
   const events = await getLatestEvents(3);
@@ -18,7 +46,7 @@ export default async function HomePage() {
   const settings = await getHomepageSettings();
 
   // Fetch recent gallery folders from ImageKit
-  const recentGalleryFolders = await getRecentGalleryFolders(4);
+  const recentGalleryFolders = await getRecentGalleryFoldersFromImageKit(6);
 
   // Fetch only featured YouTube videos
   const featuredVideos = await getFeaturedYouTubeVideos(6);
@@ -160,6 +188,72 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+
+        {/* Gallery Highlights Section */}
+        {recentGalleryFolders.length > 0 && (
+          <section className="py-12 md:py-16 px-4 bg-white">
+            <div className="max-w-7xl mx-auto">
+              {/* Enhanced Header */}
+              <div className="text-center mb-8 md:mb-12">
+                <div className="inline-flex items-center gap-2 mb-3">
+                  <div className="p-2 bg-primary/10 rounded-full">
+                    <ImageIcon className="w-6 h-6 md:w-7 md:h-7 text-primary" />
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">GALLERY HIGHLIGHTS</h2>
+                </div>
+                <p className="text-sm md:text-base text-gray-600">Capturing moments of faith, fellowship, and celebration</p>
+              </div>
+
+              {/* Gallery Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                {recentGalleryFolders.slice(0, 6).map((folder) => (
+                  <Link
+                    key={folder.id}
+                    href={`/gallery/${encodeURIComponent(folder.name)}`}
+                    className="group block relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300"
+                  >
+                    <div className="relative h-64 md:h-72 w-full">
+                      <Image
+                        src={folder.coverImage}
+                        alt={folder.name}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+
+                      {/* Content */}
+                      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 text-white transform transition-transform duration-300 group-hover:translate-y-0">
+                        <h3 className="text-lg md:text-xl font-bold mb-2 line-clamp-2">{folder.name}</h3>
+                        <div className="flex items-center gap-2 text-sm text-white/90">
+                          <ImageIcon className="w-4 h-4" />
+                          <span>{folder.count} Photos</span>
+                        </div>
+                      </div>
+
+                      {/* Hover Effect - View Gallery Button */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="bg-white text-primary px-6 py-3 rounded-full font-semibold transform scale-90 group-hover:scale-100 transition-transform duration-300 shadow-xl">
+                          View Gallery
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              {/* View All Button */}
+              <div className="text-center mt-8 md:mt-12">
+                <Button asChild size="lg" className="px-8 py-6 text-base font-semibold">
+                  <Link href="/gallery">
+                    <ImageIcon className="w-5 h-5 mr-2" />
+                    Explore Full Gallery
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* YouTube Videos Section */}
         {featuredVideos.length > 0 && (
