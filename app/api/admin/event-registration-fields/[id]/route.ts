@@ -4,7 +4,7 @@ import { updateEventRegistrationField, deleteEventRegistrationField } from "@/li
 
 export async function PATCH(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const admin = await isAdmin();
@@ -13,8 +13,9 @@ export async function PATCH(
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
 
+        const { id } = await params;
         const body = await request.json();
-        const field = await updateEventRegistrationField(params.id, body);
+        const field = await updateEventRegistrationField(id, body);
 
         return NextResponse.json(field);
     } catch (error: any) {
@@ -28,7 +29,7 @@ export async function PATCH(
 
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const admin = await isAdmin();
@@ -37,7 +38,8 @@ export async function DELETE(
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
 
-        await deleteEventRegistrationField(params.id);
+        const { id } = await params;
+        await deleteEventRegistrationField(id);
 
         return NextResponse.json({ message: "Field deleted successfully" });
     } catch (error: any) {
