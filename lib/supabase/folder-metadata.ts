@@ -25,18 +25,9 @@ export async function getFolderMetadata(folderName: string): Promise<FolderMetad
 }
 
 export async function getAllFolderMetadata(): Promise<FolderMetadata[]> {
-    const supabase = await createClient();
-    const { data, error } = await supabase
-        .from("gallery_folders")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-    if (error) {
-        console.error("Error fetching folder metadata:", error);
-        return [];
-    }
-
-    return data || [];
+    // Since we're using ImageKit for gallery storage, we don't need folder metadata from the database
+    // Return empty array to avoid errors
+    return [];
 }
 
 export async function upsertFolderMetadata(
