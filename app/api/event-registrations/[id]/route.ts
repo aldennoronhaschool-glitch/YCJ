@@ -4,7 +4,7 @@ import { deleteEventRegistration } from "@/lib/supabase/event-registrations";
 
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const admin = await isAdmin();
@@ -13,7 +13,8 @@ export async function DELETE(
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
 
-        await deleteEventRegistration(params.id);
+        const { id } = await params;
+        await deleteEventRegistration(id);
 
         return NextResponse.json({ message: "Registration deleted successfully" });
     } catch (error: any) {
