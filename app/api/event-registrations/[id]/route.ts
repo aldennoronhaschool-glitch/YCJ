@@ -4,9 +4,9 @@ import { deleteEventRegistration } from "@/lib/supabase/event-registrations";
 
 export async function DELETE(
     request: NextRequest,
-    props: { params: Promise<{ id: string }> }
+    context: { params: Promise<{ id: string }> }
 ) {
-    const params = await props.params;
+    const params = await context.params;
     const { id } = params;
     try {
         const admin = await isAdmin();
