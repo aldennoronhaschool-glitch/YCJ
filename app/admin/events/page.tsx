@@ -11,12 +11,12 @@ export default async function AdminEventsPage() {
   return (
     <div className="min-h-screen bg-background py-12 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-5xl font-bold mb-3 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">Event Management</h1>
-            <p className="text-muted-foreground text-lg">Create, update, and manage events</p>
+            <h1 className="text-3xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">Event Management</h1>
+            <p className="text-muted-foreground text-base md:text-lg">Create, update, and manage events</p>
           </div>
-          <Button asChild>
+          <Button asChild size="lg" className="w-full md:w-auto">
             <Link href="/admin/events/new">
               <Plus className="w-4 h-4 mr-2" />
               New Event
@@ -26,15 +26,14 @@ export default async function AdminEventsPage() {
 
         <EventsManager initialEvents={events} />
 
-        {/* Floating Action Button for New Event */}
+        {/* Floating Action Button for New Event - Mobile Only */}
         <Button
           asChild
           size="lg"
-          className="fixed bottom-6 right-6 rounded-full shadow-lg h-14 w-14 md:h-auto md:w-auto md:rounded-md z-40"
+          className="md:hidden fixed bottom-6 right-6 rounded-full shadow-2xl h-16 w-16 z-50 hover:scale-110 transition-transform"
         >
           <Link href="/admin/events/new">
-            <Plus className="w-5 h-5 md:mr-2" />
-            <span className="hidden md:inline">New Event</span>
+            <Plus className="w-6 h-6" />
           </Link>
         </Button>
       </div>
