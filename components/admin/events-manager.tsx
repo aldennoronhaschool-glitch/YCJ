@@ -83,21 +83,23 @@ export function EventsManager({ initialEvents }: { initialEvents: Event[] }) {
           {events.map((event) => (
             <Card key={event.id}>
               <CardHeader>
-                <div className="flex justify-between items-start gap-4">
+                <div className="flex flex-col gap-4">
                   <div className="flex-1">
-                    <CardTitle className="flex items-center gap-2">
-                      {event.title}
+                    <CardTitle className="flex flex-wrap items-center gap-2">
+                      <span className="break-words">{event.title}</span>
                       {!event.published && (
-                        <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+                        <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded whitespace-nowrap">
                           Draft
                         </span>
                       )}
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="mt-1">
                       {new Date(event.date).toLocaleDateString()} at {event.time}
                     </CardDescription>
                   </div>
-                  <div className="flex gap-2">
+
+                  {/* Desktop: Icon buttons in a row */}
+                  <div className="hidden md:flex gap-2 flex-wrap">
                     <Button
                       variant="outline"
                       size="icon"
@@ -131,6 +133,55 @@ export function EventsManager({ initialEvents }: { initialEvents: Event[] }) {
                       onClick={() => handleDelete(event.id)}
                     >
                       <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+
+                  {/* Mobile: Buttons with text labels in a grid */}
+                  <div className="grid grid-cols-2 gap-2 md:hidden">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleTogglePublish(event)}
+                      className="justify-start"
+                    >
+                      {event.published ? (
+                        <>
+                          <EyeOff className="w-4 h-4 mr-2" />
+                          Unpublish
+                        </>
+                      ) : (
+                        <>
+                          <Eye className="w-4 h-4 mr-2" />
+                          Publish
+                        </>
+                      )}
+                    </Button>
+                    <Button variant="outline" size="sm" asChild className="justify-start">
+                      <Link href={`/admin/event-registrations?event=${event.id}`}>
+                        <Users className="w-4 h-4 mr-2" />
+                        Registrations
+                      </Link>
+                    </Button>
+                    <Button variant="outline" size="sm" asChild className="justify-start">
+                      <Link href={`/admin/events/${event.id}/registration-fields`}>
+                        <Settings className="w-4 h-4 mr-2" />
+                        Form Fields
+                      </Link>
+                    </Button>
+                    <Button variant="outline" size="sm" asChild className="justify-start">
+                      <Link href={`/admin/events/${event.id}/edit`}>
+                        <Edit className="w-4 h-4 mr-2" />
+                        Edit
+                      </Link>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDelete(event.id)}
+                      className="justify-start col-span-2"
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Delete Event
                     </Button>
                   </div>
                 </div>
