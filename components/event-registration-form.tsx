@@ -68,25 +68,17 @@ export function EventRegistrationForm({ event }: { event: Event }) {
         setLoading(true);
 
         try {
-            // Separate standard fields from custom fields
-            const standardFields: Record<string, any> = {};
-            const customFields: Record<string, any> = {};
+            // Collect all form data as custom fields
+            // The backend will handle mapping to standard fields if needed
+            const allFieldsData: Record<string, any> = {};
 
             fields.forEach((field) => {
                 const fieldKey = field.field_label.toLowerCase().replace(/\s+/g, '_');
                 const value = formData[fieldKey];
 
-                // Map to standard fields if they match
-                if (field.field_label.toLowerCase() === 'name') {
-                    standardFields.name = value;
-                } else if (field.field_label.toLowerCase() === 'email') {
-                    standardFields.email = value;
-                } else if (field.field_label.toLowerCase() === 'phone') {
-                    standardFields.phone = value;
-                } else if (field.field_label.toLowerCase() === 'age') {
-                    standardFields.age = value ? parseInt(value) : null;
-                } else {
-                    customFields[field.field_label] = value;
+                // Store with original field label as key
+                if (value !== undefined && value !== '') {
+                    allFieldsData[field.field_label] = value;
                 }
             });
 
@@ -96,8 +88,7 @@ export function EventRegistrationForm({ event }: { event: Event }) {
                 body: JSON.stringify({
                     user_id: user.id,
                     event_id: event.id,
-                    ...standardFields,
-                    custom_fields: customFields,
+                    custom_fields: allFieldsData,
                 }),
             });
 
