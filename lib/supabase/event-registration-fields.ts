@@ -22,6 +22,7 @@ export async function getEventRegistrationFields(eventId: string): Promise<Event
 
         if (error) {
             console.error("Error fetching event registration fields:", error);
+            console.error("Event ID:", eventId);
             return [];
         }
 
