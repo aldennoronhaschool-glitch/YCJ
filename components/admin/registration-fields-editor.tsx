@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { EventRegistrationField } from "@/lib/supabase/event-registration-fields";
-import { Plus, Trash2, GripVertical, Save } from "lucide-react";
+import { Plus, Trash2, GripVertical, Save, ChevronUp, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function RegistrationFieldsEditor({
@@ -136,6 +136,48 @@ export function RegistrationFieldsEditor({
         }
     };
 
+    const moveField = async (index: number, direction: 'up' | 'down') => {
+        if (
+            (direction === 'up' && index === 0) ||
+            (direction === 'down' && index === fields.length - 1)
+        ) {
+            return;
+        }
+
+        const newFields = [...fields];
+        const targetIndex = direction === 'up' ? index - 1 : index + 1;
+
+        // Swap the fields
+        [newFields[index], newFields[targetIndex]] = [newFields[targetIndex], newFields[index]];
+
+        // Update field_order for both
+        newFields[index] = { ...newFields[index], field_order: index };
+        newFields[targetIndex] = { ...newFields[targetIndex], field_order: targetIndex };
+
+        setFields(newFields);
+
+        // Save to database
+        try {
+            await fetch(`/api/admin/event-registration-fields/${newFields[index].id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ field_order: index }),
+            });
+
+            await fetch(`/api/admin/event-registration-fields/${newFields[targetIndex].id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ field_order: targetIndex }),
+            });
+        } catch (error: any) {
+            toast({
+                title: "Error",
+                description: "Failed to reorder fields",
+                variant: "destructive",
+            });
+        }
+    };
+
     return (
         <div className="space-y-6">
             <Card>
@@ -148,12 +190,12 @@ export function RegistrationFieldsEditor({
                 <CardContent className="space-y-6">
                     {/* Existing Fields */}
                     <div className="space-y-3">
-                        <h3 className="font-semibold text-lg">Current Fields</h3>
-                        <div className="text-sm text-gray-600 mb-2">
-                            <strong>Default fields (always included):</strong> Name, Email, Phone, Age
-                        </div>
+                        <h3 className="font-semibold text-lg">Registration Form Fields</h3>
+                        <p className="text-sm text-gray-600 mb-2">
+                            Customize all fields for this event's registration form. You can make fields optional, reorder them, or delete them entirely.
+                        </p>
                         {fields.length === 0 ? (
-                            <p className="text-gray-500 text-sm">No custom fields added yet.</p>
+                            <p className="text-gray-500 text-sm">No fields configured yet. Add fields below to create your registration form.</p>
                         ) : (
                             <div className="space-y-2">
                                 {fields.map((field) => (
@@ -172,6 +214,26 @@ export function RegistrationFieldsEditor({
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-2">
+                                                <div className="flex flex-col gap-1">
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-6 w-6"
+                                                        onClick={() => moveField(fields.indexOf(field), 'up')}
+                                                        disabled={fields.indexOf(field) === 0}
+                                                    >
+                                                        <ChevronUp className="w-3 h-3" />
+                                                    </Button>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-6 w-6"
+                                                        onClick={() => moveField(fields.indexOf(field), 'down')}
+                                                        disabled={fields.indexOf(field) === fields.length - 1}
+                                                    >
+                                                        <ChevronDown className="w-3 h-3" />
+                                                    </Button>
+                                                </div>
                                                 <Button
                                                     variant={field.is_required ? "default" : "outline"}
                                                     size="sm"

@@ -1,29 +1,57 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Event } from "@/lib/supabase/events";
 import { SignInButton } from "@clerk/nextjs";
+import { EventRegistrationField } from "@/lib/supabase/event-registration-fields";
 
 export function EventRegistrationForm({ event }: { event: Event }) {
     const { isSignedIn, user } = useUser();
     const router = useRouter();
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        phone: "",
-        age: "",
-        additional_info: "",
-    });
+    const [fields, setFields] = useState<EventRegistrationField[]>([]);
+    const [formData, setFormData] = useState<Record<string, any>>({});
+    const [loadingFields, setLoadingFields] = useState(true);
+
+    useEffect(() => {
+        const fetchFields = async () => {
+            try {
+                const response = await fetch(`/api/event-registration-fields?event_id=${event.id}`);
+                if (!response.ok) throw new Error("Failed to fetch fields");
+
+                const data = await response.json();
+                setFields(data);
+
+                // Initialize form data with empty values
+                const initialData: Record<string, any> = {};
+                data.forEach((field: EventRegistrationField) => {
+                    initialData[field.field_label.toLowerCase().replace(/\s+/g, '_')] = '';
+                });
+                setFormData(initialData);
+            } catch (error) {
+                console.error("Error fetching registration fields:", error);
+                toast({
+                    title: "Error",
+                    description: "Failed to load registration form. Please try again.",
+                    variant: "destructive",
+                });
+            } finally {
+                setLoadingFields(false);
+            }
+        };
+
+        fetchFields();
+    }, [event.id, toast]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -40,14 +68,36 @@ export function EventRegistrationForm({ event }: { event: Event }) {
         setLoading(true);
 
         try {
+            // Separate standard fields from custom fields
+            const standardFields: Record<string, any> = {};
+            const customFields: Record<string, any> = {};
+
+            fields.forEach((field) => {
+                const fieldKey = field.field_label.toLowerCase().replace(/\s+/g, '_');
+                const value = formData[fieldKey];
+
+                // Map to standard fields if they match
+                if (field.field_label.toLowerCase() === 'name') {
+                    standardFields.name = value;
+                } else if (field.field_label.toLowerCase() === 'email') {
+                    standardFields.email = value;
+                } else if (field.field_label.toLowerCase() === 'phone') {
+                    standardFields.phone = value;
+                } else if (field.field_label.toLowerCase() === 'age') {
+                    standardFields.age = value ? parseInt(value) : null;
+                } else {
+                    customFields[field.field_label] = value;
+                }
+            });
+
             const response = await fetch("/api/event-registrations", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    ...formData,
                     user_id: user.id,
                     event_id: event.id,
-                    age: parseInt(formData.age),
+                    ...standardFields,
+                    custom_fields: customFields,
                 }),
             });
 
@@ -73,6 +123,72 @@ export function EventRegistrationForm({ event }: { event: Event }) {
         }
     };
 
+    const renderField = (field: EventRegistrationField) => {
+        const fieldKey = field.field_label.toLowerCase().replace(/\s+/g, '_');
+        const value = formData[fieldKey] || '';
+
+        const handleChange = (newValue: string) => {
+            setFormData({ ...formData, [fieldKey]: newValue });
+        };
+
+        switch (field.field_type) {
+            case 'textarea':
+                return (
+                    <div key={field.id}>
+                        <Label htmlFor={fieldKey}>
+                            {field.field_label} {field.is_required && '*'}
+                        </Label>
+                        <Textarea
+                            id={fieldKey}
+                            required={field.is_required}
+                            value={value}
+                            onChange={(e) => handleChange(e.target.value)}
+                            rows={4}
+                        />
+                    </div>
+                );
+
+            case 'select':
+                return (
+                    <div key={field.id}>
+                        <Label htmlFor={fieldKey}>
+                            {field.field_label} {field.is_required && '*'}
+                        </Label>
+                        <Select
+                            id={fieldKey}
+                            required={field.is_required}
+                            value={value}
+                            onChange={(e) => handleChange(e.target.value)}
+                        >
+                            <option value="">Select an option</option>
+                            {field.field_options?.map((option) => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </Select>
+                    </div>
+                );
+
+            default:
+                return (
+                    <div key={field.id}>
+                        <Label htmlFor={fieldKey}>
+                            {field.field_label} {field.is_required && '*'}
+                        </Label>
+                        <Input
+                            id={fieldKey}
+                            type={field.field_type}
+                            required={field.is_required}
+                            value={value}
+                            onChange={(e) => handleChange(e.target.value)}
+                            min={field.field_type === 'number' ? '1' : undefined}
+                        />
+                    </div>
+                );
+        }
+    };
+
     if (!isSignedIn) {
         return (
             <Card className="border border-gray-200 shadow-md">
@@ -91,6 +207,19 @@ export function EventRegistrationForm({ event }: { event: Event }) {
         );
     }
 
+    if (loadingFields) {
+        return (
+            <Card className="border border-gray-200 shadow-md">
+                <CardHeader>
+                    <CardTitle className="text-gray-900">Loading...</CardTitle>
+                    <CardDescription className="text-gray-600">
+                        Please wait while we load the registration form.
+                    </CardDescription>
+                </CardHeader>
+            </Card>
+        );
+    }
+
     return (
         <Card className="border border-gray-200 shadow-md">
             <CardHeader>
@@ -101,62 +230,15 @@ export function EventRegistrationForm({ event }: { event: Event }) {
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <Label htmlFor="name">Full Name *</Label>
-                        <Input
-                            id="name"
-                            required
-                            value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        />
-                    </div>
+                    {fields.map((field) => renderField(field))}
 
-                    <div>
-                        <Label htmlFor="email">Email *</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            required
-                            value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        />
-                    </div>
+                    {fields.length === 0 && (
+                        <p className="text-gray-500 text-sm">
+                            No registration fields configured for this event.
+                        </p>
+                    )}
 
-                    <div>
-                        <Label htmlFor="phone">Phone Number *</Label>
-                        <Input
-                            id="phone"
-                            type="tel"
-                            required
-                            value={formData.phone}
-                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        />
-                    </div>
-
-                    <div>
-                        <Label htmlFor="age">Age *</Label>
-                        <Input
-                            id="age"
-                            type="number"
-                            required
-                            min="1"
-                            value={formData.age}
-                            onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                        />
-                    </div>
-
-                    <div>
-                        <Label htmlFor="additional_info">Additional Information (Optional)</Label>
-                        <Textarea
-                            id="additional_info"
-                            value={formData.additional_info}
-                            onChange={(e) => setFormData({ ...formData, additional_info: e.target.value })}
-                            placeholder="Any special requirements or notes..."
-                            rows={4}
-                        />
-                    </div>
-
-                    <Button type="submit" className="w-full" disabled={loading}>
+                    <Button type="submit" className="w-full" disabled={loading || fields.length === 0}>
                         {loading ? "Submitting..." : "Submit Registration"}
                     </Button>
                 </form>
