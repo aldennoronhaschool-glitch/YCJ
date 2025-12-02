@@ -1,3 +1,4 @@
+// Next.js 15 route handler for event registration deletion
 import { NextRequest, NextResponse } from "next/server";
 import { isAdmin } from "@/lib/auth";
 import { deleteEventRegistration } from "@/lib/supabase/event-registrations";
