@@ -1,4 +1,5 @@
 import { createClient } from "./server";
+import { createAdminClient } from "./admin";
 
 export interface EventRegistrationField {
     id: string;
@@ -34,7 +35,7 @@ export async function getEventRegistrationFields(eventId: string): Promise<Event
 }
 
 export async function createEventRegistrationField(field: Omit<EventRegistrationField, "id" | "created_at">) {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
         .from("event_registration_fields")
         .insert([field])
@@ -42,6 +43,8 @@ export async function createEventRegistrationField(field: Omit<EventRegistration
         .single();
 
     if (error) {
+        console.error("Error creating event registration field:", error);
+        console.error("Field data:", field);
         throw new Error(error.message);
     }
 
@@ -49,7 +52,7 @@ export async function createEventRegistrationField(field: Omit<EventRegistration
 }
 
 export async function updateEventRegistrationField(id: string, field: Partial<EventRegistrationField>) {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
     const { data, error } = await supabase
         .from("event_registration_fields")
         .update(field)
@@ -65,7 +68,7 @@ export async function updateEventRegistrationField(id: string, field: Partial<Ev
 }
 
 export async function deleteEventRegistrationField(id: string) {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
     const { error } = await supabase
         .from("event_registration_fields")
         .delete()
@@ -77,7 +80,7 @@ export async function deleteEventRegistrationField(id: string) {
 }
 
 export async function updateFieldsOrder(fields: { id: string; field_order: number }[]) {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
 
     const updates = fields.map(field =>
         supabase
