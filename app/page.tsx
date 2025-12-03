@@ -107,10 +107,36 @@ export default async function HomePage() {
         )}
 
         {/* Upcoming Events */}
-        <section className="py-12 md:py-16 px-4 bg-white">
+        <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-white to-gray-50">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-8 md:mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">UPCOMING EVENTS</h2>
+            {/* Enhanced Header Box */}
+            <div className="relative mb-10">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl blur-lg opacity-20"></div>
+              <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl p-6 md:p-8 text-white shadow-xl">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                  <div className="text-center md:text-left">
+                    <div className="inline-flex items-center gap-2 mb-2">
+                      <div className="p-2 bg-white/20 backdrop-blur-sm rounded-full">
+                        <Calendar className="w-6 h-6 md:w-7 md:h-7" />
+                      </div>
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">UPCOMING EVENTS</h2>
+                    </div>
+                    <p className="text-base md:text-lg text-white/95">
+                      Join us for fellowship, worship, and community
+                    </p>
+                  </div>
+                  <Button
+                    asChild
+                    size="default"
+                    className="bg-white text-purple-600 hover:bg-gray-100 shadow-md px-6 py-5 font-bold whitespace-nowrap"
+                  >
+                    <Link href="/events">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      View All Events
+                    </Link>
+                  </Button>
+                </div>
+              </div>
             </div>
             {events.length === 0 ? (
               <div className="text-center py-12">
@@ -154,11 +180,6 @@ export default async function HomePage() {
                 ))}
               </div>
             )}
-            <div className="text-center mt-8">
-              <Button asChild>
-                <Link href="/events">View All Events</Link>
-              </Button>
-            </div>
           </div>
         </section>
 
