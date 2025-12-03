@@ -185,17 +185,38 @@ export default async function HomePage() {
 
         {/* Gallery Highlights Section */}
         {recentGalleryFolders.length > 0 && (
-          <section className="py-12 md:py-16 px-4 bg-white">
+          <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
             <div className="max-w-7xl mx-auto">
-              {/* Enhanced Header */}
-              <div className="text-center mb-8 md:mb-12">
-                <div className="inline-flex items-center gap-2 mb-3">
-                  <div className="p-2 bg-primary/10 rounded-full">
-                    <ImageIcon className="w-6 h-6 md:w-7 md:h-7 text-primary" />
+              {/* Enhanced Header Box */}
+              <div className="relative mb-10">
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 rounded-2xl blur-lg opacity-15"></div>
+                <div className="relative bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 rounded-2xl p-6 md:p-8 border-2 border-amber-200/50 shadow-xl">
+                  <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="text-center md:text-left">
+                      <div className="inline-flex items-center gap-3 mb-2">
+                        <div className="p-2.5 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full shadow-md">
+                          <ImageIcon className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                        </div>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-amber-700 via-orange-600 to-amber-700 bg-clip-text text-transparent">
+                          GALLERY HIGHLIGHTS
+                        </h2>
+                      </div>
+                      <p className="text-base md:text-lg text-amber-800/80">
+                        Capturing moments of faith, fellowship, and celebration
+                      </p>
+                    </div>
+                    <Button
+                      asChild
+                      size="default"
+                      className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-md px-6 py-5 font-bold whitespace-nowrap border-0"
+                    >
+                      <Link href="/gallery">
+                        <ImageIcon className="w-4 h-4 mr-2" />
+                        Explore Full Gallery
+                      </Link>
+                    </Button>
                   </div>
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">GALLERY HIGHLIGHTS</h2>
                 </div>
-                <p className="text-sm md:text-base text-gray-600">Capturing moments of faith, fellowship, and celebration</p>
               </div>
 
               {/* Gallery Grid */}
@@ -234,16 +255,6 @@ export default async function HomePage() {
                     </div>
                   </Link>
                 ))}
-              </div>
-
-              {/* View All Button */}
-              <div className="text-center mt-8 md:mt-12">
-                <Button asChild size="lg" className="px-8 py-6 text-base font-semibold">
-                  <Link href="/gallery">
-                    <ImageIcon className="w-5 h-5 mr-2" />
-                    Explore Full Gallery
-                  </Link>
-                </Button>
               </div>
             </div>
           </section>
