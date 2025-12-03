@@ -337,61 +337,6 @@ export default async function HomePage() {
         )}
 
 
-        {/* Quick Links Section */}
-        <section className="py-12 md:py-16 px-4 bg-white">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-8 md:mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">Quick Links</h2>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-              <Card className="text-center hover:shadow-lg transition-shadow border border-gray-200">
-                <CardHeader className="pb-3 md:pb-6">
-                  <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Calendar className="w-6 h-6 md:w-8 md:h-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-base md:text-lg">Events</CardTitle>
-                  <CardDescription className="text-xs md:text-sm">View all upcoming events</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button asChild className="w-full">
-                    <Link href="/events">Explore Events</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center hover:shadow-lg transition-shadow border border-gray-200">
-                <CardHeader className="pb-3 md:pb-6">
-                  <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                    <ImageIcon className="w-6 h-6 md:w-8 md:h-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-base md:text-lg">Gallery</CardTitle>
-                  <CardDescription className="text-xs md:text-sm">Browse photos from events</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button asChild className="w-full">
-                    <Link href="/gallery">View Gallery</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center hover:shadow-lg transition-shadow border border-gray-200">
-                <CardHeader className="pb-3 md:pb-6">
-                  <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Users className="w-6 h-6 md:w-8 md:h-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-base md:text-lg">Competitions</CardTitle>
-                  <CardDescription className="text-xs md:text-sm">Register for competitions</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button asChild className="w-full">
-                    <Link href="/register">Register Now</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
         {/* Welcome Note Section */}
         <section className="py-12 md:py-16 px-4 bg-gray-50">
           <div className="max-w-4xl mx-auto">
