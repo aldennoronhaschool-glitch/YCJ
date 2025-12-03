@@ -11,39 +11,7 @@ import { Logo } from "@/components/logo";
 import Image from "next/image";
 import { ImageLightbox } from "@/components/ui/image-lightbox";
 
-interface GalleryFolder {
-  id: string;
-  name: string;
-  coverImage: string;
-  count: number;
-  description?: string | null;
-  latestImageDate?: string;
-}
-
-async function getRecentGalleryFoldersFromImageKit(limit: number = 6): Promise<GalleryFolder[]> {
-  try {
-    // Use relative URL to work on both local and deployed environments
-    const baseUrl = process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : 'http://localhost:3000';
-
-    const response = await fetch(`${baseUrl}/api/imagekit/recent-folders?limit=${limit}`, {
-      cache: 'no-store',
-      next: { revalidate: 0 }
-    });
-
-    if (!response.ok) {
-      console.error('Failed to fetch gallery folders from ImageKit:', response.status, response.statusText);
-      return [];
-    }
-
-    const data = await response.json();
-    return data.folders || [];
-  } catch (error) {
-    console.error('Error fetching gallery folders:', error);
-    return [];
-  }
-}
+import { getRecentGalleryFolders } from "@/lib/gallery/get-recent-folders";
 
 export default async function HomePage() {
   const events = await getLatestEvents(3);
@@ -51,7 +19,7 @@ export default async function HomePage() {
   const settings = await getHomepageSettings();
 
   // Fetch recent gallery folders from ImageKit
-  const recentGalleryFolders = await getRecentGalleryFoldersFromImageKit(6);
+  const recentGalleryFolders = await getRecentGalleryFolders(6);
 
   // Fetch only featured YouTube videos
   const featuredVideos = await getFeaturedYouTubeVideos(6);
