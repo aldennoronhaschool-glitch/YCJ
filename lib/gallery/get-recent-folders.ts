@@ -12,11 +12,32 @@ interface GalleryFolder {
 
 export async function getRecentGalleryFolders(limit: number = 6): Promise<GalleryFolder[]> {
     try {
+        console.log('[Gallery] Starting getRecentGalleryFolders...');
+
+        // Check if environment variables are set
+        const hasPublicKey = !!process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY;
+        const hasPrivateKey = !!process.env.IMAGEKIT_PRIVATE_KEY;
+        const hasUrlEndpoint = !!process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT;
+
+        console.log('[Gallery] Environment variables:', {
+            hasPublicKey,
+            hasPrivateKey,
+            hasUrlEndpoint,
+            urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT
+        });
+
+        if (!hasPublicKey || !hasPrivateKey || !hasUrlEndpoint) {
+            console.error('[Gallery] Missing ImageKit environment variables');
+            return [];
+        }
+
         const imagekit = new ImageKit({
             publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY || "",
             privateKey: process.env.IMAGEKIT_PRIVATE_KEY || "",
             urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT || "",
         });
+
+        console.log('[Gallery] ImageKit initialized, fetching files...');
 
         // List ALL files
         const files = await new Promise<any[]>((resolve, reject) => {
@@ -27,9 +48,10 @@ export async function getRecentGalleryFolders(limit: number = 6): Promise<Galler
                 },
                 (error, result) => {
                     if (error) {
-                        console.error("ImageKit listFiles error:", error);
+                        console.error("[Gallery] ImageKit listFiles error:", error);
                         reject(error);
                     } else {
+                        console.log(`[Gallery] Fetched ${result?.length || 0} files from ImageKit`);
                         resolve(result || []);
                     }
                 }
@@ -58,6 +80,8 @@ export async function getRecentGalleryFolders(limit: number = 6): Promise<Galler
             }
         });
 
+        console.log(`[Gallery] Found ${folderMap.size} gallery folders`);
+
         // Fetch metadata
         const metadata = await getAllFolderMetadata();
         const metadataMap = new Map(metadata.map((m: any) => [m.folder_name, m.description]));
@@ -78,9 +102,10 @@ export async function getRecentGalleryFolders(limit: number = 6): Promise<Galler
             .sort((a, b) => new Date(b.latestImageDate).getTime() - new Date(a.latestImageDate).getTime())
             .slice(0, limit);
 
+        console.log(`[Gallery] Returning ${folders.length} folders`);
         return folders;
     } catch (error) {
-        console.error('Error fetching gallery folders:', error);
+        console.error('[Gallery] Error fetching gallery folders:', error);
         return [];
     }
 }
