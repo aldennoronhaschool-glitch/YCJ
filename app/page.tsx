@@ -182,7 +182,7 @@ export default async function HomePage() {
                 {recentGalleryFolders.slice(0, 6).map((folder) => (
                   <Link
                     key={folder.id}
-                    href={`/gallery/${encodeURIComponent(folder.name)}`}
+                    href="/gallery"
                     className="group block relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300"
                   >
                     <div className="relative h-64 md:h-72 w-full">
