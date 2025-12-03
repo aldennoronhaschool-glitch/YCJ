@@ -40,6 +40,7 @@ We pray that God would provide for you the comfort and strength He has promised 
 
 God has been gracious and we are here not by our strength but by His faithfulness. He built the Youth of Christha Jyothi brick by brick while we stood lifting our hands in worship. Our prayer is that this family at YCJ would abound in God's love, goodness, and grace. We pray that you would find God in this kingdom to place and time of your life. There is hope and rest in Him for all who are Seeking. We pray you wouldn't miss it.`,
     welcome_note_signature: initialSettings.welcome_note_signature || "Youth of Christha Jyothi Leadership",
+    welcome_note_background_image: initialSettings.welcome_note_background_image || "",
     // Contact Information
     contact_email: initialSettings.contact_email || "info@ycjchurch.org",
     contact_phone: initialSettings.contact_phone || "+91 (XX) XXXX XXXX",
@@ -325,7 +326,7 @@ God has been gracious and we are here not by our strength but by His faithfulnes
       <Card className="border border-gray-200">
         <CardHeader>
           <CardTitle>Welcome Note</CardTitle>
-          <CardDescription>Edit the welcome message displayed on the homepage</CardDescription>
+          <CardDescription>Edit the welcome message and background image displayed on the homepage</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
@@ -346,6 +347,49 @@ God has been gracious and we are here not by our strength but by His faithfulnes
               onChange={(e) => setSettings({ ...settings, welcome_note_signature: e.target.value })}
               placeholder="Youth of Christha Jyothi Leadership"
             />
+          </div>
+
+          <div>
+            <Label>Background Image (Optional)</Label>
+            {settings.welcome_note_background_image && (
+              <div className="relative w-full h-48 rounded-lg overflow-hidden border mb-4">
+                <Image
+                  src={settings.welcome_note_background_image}
+                  alt="Welcome note background preview"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            )}
+            <div className="flex items-center gap-2">
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleImageUpload("welcome_note_background_image", e)}
+                disabled={uploading === "welcome_note_background_image"}
+                className="hidden"
+                id="welcome_note_background_image"
+              />
+              <Label
+                htmlFor="welcome_note_background_image"
+                className="flex items-center gap-2 px-4 py-2 border rounded-md cursor-pointer hover:bg-gray-50"
+              >
+                <Upload className="w-4 h-4" />
+                {uploading === "welcome_note_background_image" ? "Uploading..." : "Upload Background Image"}
+              </Label>
+              {settings.welcome_note_background_image && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSettings({ ...settings, welcome_note_background_image: "" })}
+                >
+                  Remove
+                </Button>
+              )}
+            </div>
+            <p className="text-sm text-gray-500 mt-1">
+              Upload a background image for the welcome note section (recommended: couple photo or church image).
+            </p>
           </div>
         </CardContent>
       </Card>

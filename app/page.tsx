@@ -338,36 +338,66 @@ export default async function HomePage() {
 
 
         {/* Welcome Note Section */}
-        <section className="py-12 md:py-16 px-4 bg-gray-50">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-6 text-center">Welcome Note</h2>
-            <div className="prose prose-sm md:prose-lg max-w-none text-gray-700 leading-relaxed">
-              {settings.welcome_note ? (
-                <div className="whitespace-pre-line">
-                  {settings.welcome_note.split('\n').map((paragraph, index) => (
-                    paragraph.trim() && (
-                      <p key={index} className="mb-4">
-                        {paragraph}
+        <section className="py-12 md:py-16 px-4 relative overflow-hidden">
+          {/* Background Image with Overlay */}
+          {settings.welcome_note_background_image && (
+            <>
+              <div className="absolute inset-0 z-0">
+                <Image
+                  src={settings.welcome_note_background_image}
+                  alt="Welcome background"
+                  fill
+                  className="object-cover"
+                  priority={false}
+                />
+              </div>
+              <div className="absolute inset-0 bg-black/40 z-0"></div>
+            </>
+          )}
+
+          <div className={`max-w-6xl mx-auto relative z-10 ${settings.welcome_note_background_image ? '' : 'bg-gray-50 rounded-2xl p-8 md:p-12'}`}>
+            <div className={`grid md:grid-cols-${settings.welcome_note_background_image ? '2' : '1'} gap-8 items-center`}>
+              {/* Text Content */}
+              <div className={settings.welcome_note_background_image ? 'bg-gray-800/80 backdrop-blur-sm p-6 md:p-8 rounded-xl' : ''}>
+                <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 ${settings.welcome_note_background_image ? 'text-white' : 'text-gray-900'}`}>
+                  Welcome Note
+                </h2>
+                <div className={`prose prose-sm md:prose-lg max-w-none leading-relaxed ${settings.welcome_note_background_image ? 'text-white prose-invert' : 'text-gray-700'}`}>
+                  {settings.welcome_note ? (
+                    <div className="whitespace-pre-line">
+                      {settings.welcome_note.split('\n').map((paragraph, index) => (
+                        paragraph.trim() && (
+                          <p key={index} className="mb-4">
+                            {paragraph}
+                          </p>
+                        )
+                      ))}
+                    </div>
+                  ) : (
+                    <>
+                      <p className="mb-4">
+                        This life is a beautiful gift of God. Life can get both fair and unfair at times. We find ourselves fighting battles (some meaningful and some meaningless) and believe they are here to stay. Many call life a race and some don't even know why they are running it. In the midst of it all, we pray that God's pure light would lead your way and you would know He truly cares.
                       </p>
-                    )
-                  ))}
+                      <p className="mb-4">
+                        We pray that God would provide for you the comfort and strength He has promised His children and that you would discover the freedom in trusting the One who will never let you down. The Lord builds both our character and competence for HIS glory in us.
+                      </p>
+                      <p className="mb-4">
+                        God has been gracious and we are here not by our strength but by His faithfulness. He built the Youth of Christha Jyothi brick by brick while we stood lifting our hands in worship. Our prayer is that this family at YCJ would abound in God's love, goodness, and grace. We pray that you would find God in this kingdom to place and time of your life. There is hope and rest in Him for all who are Seeking. We pray you wouldn't miss it.
+                      </p>
+                    </>
+                  )}
+                  <p className={`font-semibold mt-6 ${settings.welcome_note_background_image ? 'text-white' : 'text-gray-900'}`}>
+                    {settings.welcome_note_signature || "Youth of Christha Jyothi Leadership"}
+                  </p>
                 </div>
-              ) : (
-                <>
-                  <p className="mb-4">
-                    This life is a beautiful gift of God. Life can get both fair and unfair at times. We find ourselves fighting battles (some meaningful and some meaningless) and believe they are here to stay. Many call life a race and some don't even know why they are running it. In the midst of it all, we pray that God's pure light would lead your way and you would know He truly cares.
-                  </p>
-                  <p className="mb-4">
-                    We pray that God would provide for you the comfort and strength He has promised His children and that you would discover the freedom in trusting the One who will never let you down. The Lord builds both our character and competence for HIS glory in us.
-                  </p>
-                  <p className="mb-4">
-                    God has been gracious and we are here not by our strength but by His faithfulness. He built the Youth of Christha Jyothi brick by brick while we stood lifting our hands in worship. Our prayer is that this family at YCJ would abound in God's love, goodness, and grace. We pray that you would find God in this kingdom to place and time of your life. There is hope and rest in Him for all who are Seeking. We pray you wouldn't miss it.
-                  </p>
-                </>
+              </div>
+
+              {/* Image placeholder on the right (only visible when background image is set) */}
+              {settings.welcome_note_background_image && (
+                <div className="hidden md:block">
+                  {/* This space is intentionally left for the background image to show through */}
+                </div>
               )}
-              <p className="font-semibold text-gray-900 mt-6">
-                {settings.welcome_note_signature || "Youth of Christha Jyothi Leadership"}
-              </p>
             </div>
           </div>
         </section>
