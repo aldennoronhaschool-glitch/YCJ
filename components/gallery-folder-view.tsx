@@ -30,16 +30,22 @@ export function GalleryFolderView({ folderName }: GalleryFolderViewProps) {
     const fetchFolderImages = async () => {
         try {
             setLoading(true);
-            // Construct the folder path - assuming folders are under /gallery/
-            const folderPath = `gallery/${folderName}`;
-            const response = await fetch(`/api/imagekit/gallery?folder=${encodeURIComponent(folderPath)}`);
+            console.log('[GalleryFolderView] Fetching images for folder:', folderName);
+
+            // The API expects just the folder name, it will add /gallery/ prefix
+            const response = await fetch(`/api/imagekit/gallery?folder=${encodeURIComponent(folderName)}`);
+
+            console.log('[GalleryFolderView] Response status:', response.status);
 
             if (response.ok) {
                 const data = await response.json();
+                console.log('[GalleryFolderView] Response data:', data);
                 setImages(data.images || []);
+            } else {
+                console.error('[GalleryFolderView] Failed to fetch:', response.statusText);
             }
         } catch (error) {
-            console.error("Error fetching folder images:", error);
+            console.error("[GalleryFolderView] Error fetching folder images:", error);
         } finally {
             setLoading(false);
         }
