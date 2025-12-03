@@ -109,32 +109,34 @@ export default async function HomePage() {
         {/* Upcoming Events */}
         <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-white to-gray-50">
           <div className="max-w-7xl mx-auto">
-            {/* Enhanced Header Box */}
-            <div className="relative mb-10">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl blur-lg opacity-20"></div>
-              <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl p-6 md:p-8 text-white shadow-xl">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                  <div className="text-center md:text-left">
+            {/* Enhanced Header Box - Centered */}
+            <div className="max-w-4xl mx-auto mb-10">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 rounded-xl blur-md opacity-10"></div>
+                <div className="relative bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 rounded-xl p-5 md:p-6 border border-amber-200/40 shadow-lg">
+                  <div className="text-center">
                     <div className="inline-flex items-center gap-2 mb-2">
-                      <div className="p-2 bg-white/20 backdrop-blur-sm rounded-full">
-                        <Calendar className="w-6 h-6 md:w-7 md:h-7" />
+                      <div className="p-2 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full shadow-sm">
+                        <Calendar className="w-5 h-5 text-white" />
                       </div>
-                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">UPCOMING EVENTS</h2>
+                      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-700 via-orange-600 to-amber-700 bg-clip-text text-transparent">
+                        UPCOMING EVENTS
+                      </h2>
                     </div>
-                    <p className="text-base md:text-lg text-white/95">
+                    <p className="text-sm md:text-base text-amber-800/70 mb-3">
                       Join us for fellowship, worship, and community
                     </p>
+                    <Button
+                      asChild
+                      size="sm"
+                      className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-sm px-5 py-2 font-semibold border-0"
+                    >
+                      <Link href="/events">
+                        <Calendar className="w-3.5 h-3.5 mr-1.5" />
+                        View All Events
+                      </Link>
+                    </Button>
                   </div>
-                  <Button
-                    asChild
-                    size="default"
-                    className="bg-white text-purple-600 hover:bg-gray-100 shadow-md px-6 py-5 font-bold whitespace-nowrap"
-                  >
-                    <Link href="/events">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      View All Events
-                    </Link>
-                  </Button>
                 </div>
               </div>
             </div>
@@ -187,34 +189,34 @@ export default async function HomePage() {
         {recentGalleryFolders.length > 0 && (
           <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
             <div className="max-w-7xl mx-auto">
-              {/* Enhanced Header Box */}
-              <div className="relative mb-10">
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 rounded-2xl blur-lg opacity-15"></div>
-                <div className="relative bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 rounded-2xl p-6 md:p-8 border-2 border-amber-200/50 shadow-xl">
-                  <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="text-center md:text-left">
-                      <div className="inline-flex items-center gap-3 mb-2">
-                        <div className="p-2.5 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full shadow-md">
-                          <ImageIcon className="w-6 h-6 md:w-7 md:h-7 text-white" />
+              {/* Enhanced Header Box - Centered */}
+              <div className="max-w-4xl mx-auto mb-10">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 rounded-xl blur-md opacity-10"></div>
+                  <div className="relative bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 rounded-xl p-5 md:p-6 border border-amber-200/40 shadow-lg">
+                    <div className="text-center">
+                      <div className="inline-flex items-center gap-2 mb-2">
+                        <div className="p-2 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full shadow-sm">
+                          <ImageIcon className="w-5 h-5 text-white" />
                         </div>
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-amber-700 via-orange-600 to-amber-700 bg-clip-text text-transparent">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-700 via-orange-600 to-amber-700 bg-clip-text text-transparent">
                           GALLERY HIGHLIGHTS
                         </h2>
                       </div>
-                      <p className="text-base md:text-lg text-amber-800/80">
+                      <p className="text-sm md:text-base text-amber-800/70 mb-3">
                         Capturing moments of faith, fellowship, and celebration
                       </p>
+                      <Button
+                        asChild
+                        size="sm"
+                        className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-sm px-5 py-2 font-semibold border-0"
+                      >
+                        <Link href="/gallery">
+                          <ImageIcon className="w-3.5 h-3.5 mr-1.5" />
+                          Explore Full Gallery
+                        </Link>
+                      </Button>
                     </div>
-                    <Button
-                      asChild
-                      size="default"
-                      className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-md px-6 py-5 font-bold whitespace-nowrap border-0"
-                    >
-                      <Link href="/gallery">
-                        <ImageIcon className="w-4 h-4 mr-2" />
-                        Explore Full Gallery
-                      </Link>
-                    </Button>
                   </div>
                 </div>
               </div>
@@ -262,34 +264,36 @@ export default async function HomePage() {
 
         {/* YouTube Videos Section */}
         {featuredVideos.length > 0 && (
-          <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
+          <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-white to-gray-50">
             <div className="max-w-7xl mx-auto">
-              {/* Enhanced Header Box */}
-              <div className="relative mb-10">
-                <div className="absolute inset-0 bg-gradient-to-r from-red-500 via-red-600 to-orange-500 rounded-2xl blur-lg opacity-20"></div>
-                <div className="relative bg-gradient-to-r from-red-500 via-red-600 to-orange-500 rounded-2xl p-6 md:p-8 text-white shadow-xl">
-                  <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="text-center md:text-left">
+              {/* Enhanced Header Box - Centered */}
+              <div className="max-w-4xl mx-auto mb-10">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 rounded-xl blur-md opacity-10"></div>
+                  <div className="relative bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 rounded-xl p-5 md:p-6 border border-amber-200/40 shadow-lg">
+                    <div className="text-center">
                       <div className="inline-flex items-center gap-2 mb-2">
-                        <div className="p-2 bg-white/20 backdrop-blur-sm rounded-full">
-                          <Youtube className="w-6 h-6 md:w-7 md:h-7" />
+                        <div className="p-2 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full shadow-sm">
+                          <Youtube className="w-5 h-5 text-white" />
                         </div>
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">OUR VIDEOS</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-700 via-orange-600 to-amber-700 bg-clip-text text-transparent">
+                          OUR VIDEOS
+                        </h2>
                       </div>
-                      <p className="text-base md:text-lg text-white/95">
+                      <p className="text-sm md:text-base text-amber-800/70 mb-3">
                         Watch our worship services, livestreams, and heartfelt song covers
                       </p>
+                      <Button
+                        asChild
+                        size="sm"
+                        className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-sm px-5 py-2 font-semibold border-0"
+                      >
+                        <Link href="/videos">
+                          <Play className="w-3.5 h-3.5 mr-1.5" />
+                          View All Videos
+                        </Link>
+                      </Button>
                     </div>
-                    <Button
-                      asChild
-                      size="default"
-                      className="bg-white text-red-600 hover:bg-gray-100 shadow-md px-6 py-5 font-bold whitespace-nowrap"
-                    >
-                      <Link href="/videos">
-                        <Play className="w-4 h-4 mr-2" />
-                        View All Videos
-                      </Link>
-                    </Button>
                   </div>
                 </div>
               </div>
