@@ -107,38 +107,31 @@ export default async function HomePage() {
         )}
 
         {/* Upcoming Events */}
-        <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-white to-gray-50">
+        <section className="py-12 md:py-16 px-4 bg-white">
           <div className="max-w-7xl mx-auto">
-            {/* Enhanced Header Box - Centered */}
-            <div className="max-w-4xl mx-auto mb-10">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 rounded-xl blur-md opacity-10"></div>
-                <div className="relative bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 rounded-xl p-5 md:p-6 border border-amber-200/40 shadow-lg">
-                  <div className="text-center">
-                    <div className="inline-flex items-center gap-2 mb-2">
-                      <div className="p-2 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full shadow-sm">
-                        <Calendar className="w-5 h-5 text-white" />
-                      </div>
-                      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-700 via-orange-600 to-amber-700 bg-clip-text text-transparent">
-                        UPCOMING EVENTS
-                      </h2>
-                    </div>
-                    <p className="text-sm md:text-base text-amber-800/70 mb-3">
-                      Join us for fellowship, worship, and community
-                    </p>
-                    <Button
-                      asChild
-                      size="sm"
-                      className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-sm px-5 py-2 font-semibold border-0"
-                    >
-                      <Link href="/events">
-                        <Calendar className="w-3.5 h-3.5 mr-1.5" />
-                        View All Events
-                      </Link>
-                    </Button>
-                  </div>
+            {/* Simple Header */}
+            <div className="max-w-3xl mx-auto mb-8 bg-orange-50 rounded-lg p-4 md:p-5 text-center">
+              <div className="inline-flex items-center gap-2 mb-2">
+                <div className="p-1.5 bg-orange-500 rounded-full">
+                  <Calendar className="w-4 h-4 text-white" />
                 </div>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
+                  UPCOMING EVENTS
+                </h2>
               </div>
+              <p className="text-xs md:text-sm text-gray-700 mb-3">
+                Join us for fellowship, worship, and community
+              </p>
+              <Button
+                asChild
+                size="sm"
+                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1.5 text-sm"
+              >
+                <Link href="/events">
+                  <Calendar className="w-3.5 h-3.5 mr-1.5" />
+                  View All Events
+                </Link>
+              </Button>
             </div>
             {events.length === 0 ? (
               <div className="text-center py-12">
@@ -187,38 +180,31 @@ export default async function HomePage() {
 
         {/* Gallery Highlights Section */}
         {recentGalleryFolders.length > 0 && (
-          <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
+          <section className="py-12 md:py-16 px-4 bg-gray-50">
             <div className="max-w-7xl mx-auto">
-              {/* Enhanced Header Box - Centered */}
-              <div className="max-w-4xl mx-auto mb-10">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 rounded-xl blur-md opacity-10"></div>
-                  <div className="relative bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 rounded-xl p-5 md:p-6 border border-amber-200/40 shadow-lg">
-                    <div className="text-center">
-                      <div className="inline-flex items-center gap-2 mb-2">
-                        <div className="p-2 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full shadow-sm">
-                          <ImageIcon className="w-5 h-5 text-white" />
-                        </div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-700 via-orange-600 to-amber-700 bg-clip-text text-transparent">
-                          GALLERY HIGHLIGHTS
-                        </h2>
-                      </div>
-                      <p className="text-sm md:text-base text-amber-800/70 mb-3">
-                        Capturing moments of faith, fellowship, and celebration
-                      </p>
-                      <Button
-                        asChild
-                        size="sm"
-                        className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-sm px-5 py-2 font-semibold border-0"
-                      >
-                        <Link href="/gallery">
-                          <ImageIcon className="w-3.5 h-3.5 mr-1.5" />
-                          Explore Full Gallery
-                        </Link>
-                      </Button>
-                    </div>
+              {/* Simple Header */}
+              <div className="max-w-3xl mx-auto mb-8 bg-orange-50 rounded-lg p-4 md:p-5 text-center">
+                <div className="inline-flex items-center gap-2 mb-2">
+                  <div className="p-1.5 bg-orange-500 rounded-full">
+                    <ImageIcon className="w-4 h-4 text-white" />
                   </div>
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
+                    GALLERY HIGHLIGHTS
+                  </h2>
                 </div>
+                <p className="text-xs md:text-sm text-gray-700 mb-3">
+                  Capturing moments of faith, fellowship, and celebration
+                </p>
+                <Button
+                  asChild
+                  size="sm"
+                  className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1.5 text-sm"
+                >
+                  <Link href="/gallery">
+                    <ImageIcon className="w-3.5 h-3.5 mr-1.5" />
+                    Explore Full Gallery
+                  </Link>
+                </Button>
               </div>
 
               {/* Gallery Grid */}
@@ -264,38 +250,31 @@ export default async function HomePage() {
 
         {/* YouTube Videos Section */}
         {featuredVideos.length > 0 && (
-          <section className="py-12 md:py-16 px-4 bg-gradient-to-b from-white to-gray-50">
+          <section className="py-12 md:py-16 px-4 bg-white">
             <div className="max-w-7xl mx-auto">
-              {/* Enhanced Header Box - Centered */}
-              <div className="max-w-4xl mx-auto mb-10">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 rounded-xl blur-md opacity-10"></div>
-                  <div className="relative bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 rounded-xl p-5 md:p-6 border border-amber-200/40 shadow-lg">
-                    <div className="text-center">
-                      <div className="inline-flex items-center gap-2 mb-2">
-                        <div className="p-2 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full shadow-sm">
-                          <Youtube className="w-5 h-5 text-white" />
-                        </div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-700 via-orange-600 to-amber-700 bg-clip-text text-transparent">
-                          OUR VIDEOS
-                        </h2>
-                      </div>
-                      <p className="text-sm md:text-base text-amber-800/70 mb-3">
-                        Watch our worship services, livestreams, and heartfelt song covers
-                      </p>
-                      <Button
-                        asChild
-                        size="sm"
-                        className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-sm px-5 py-2 font-semibold border-0"
-                      >
-                        <Link href="/videos">
-                          <Play className="w-3.5 h-3.5 mr-1.5" />
-                          View All Videos
-                        </Link>
-                      </Button>
-                    </div>
+              {/* Simple Header */}
+              <div className="max-w-3xl mx-auto mb-8 bg-orange-50 rounded-lg p-4 md:p-5 text-center">
+                <div className="inline-flex items-center gap-2 mb-2">
+                  <div className="p-1.5 bg-orange-500 rounded-full">
+                    <Youtube className="w-4 h-4 text-white" />
                   </div>
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
+                    OUR VIDEOS
+                  </h2>
                 </div>
+                <p className="text-xs md:text-sm text-gray-700 mb-3">
+                  Watch our worship services, livestreams, and heartfelt song covers
+                </p>
+                <Button
+                  asChild
+                  size="sm"
+                  className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1.5 text-sm"
+                >
+                  <Link href="/videos">
+                    <Play className="w-3.5 h-3.5 mr-1.5" />
+                    View All Videos
+                  </Link>
+                </Button>
               </div>
 
               {/* Combined Videos Grid */}
@@ -402,36 +381,36 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Connect with Us / Contact Section - ACSA Style */}
-        <section className="py-16 px-4 bg-gray-50 border-t">
+        {/* Connect with Us / Contact Section - Dark Theme */}
+        <section className="py-16 px-4 bg-black border-t border-gray-800">
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-3 gap-8 mb-8">
               {/* Quick Links */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
+                <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
                 <ul className="space-y-2">
                   <li>
-                    <Link href="/" className="text-gray-600 hover:text-primary transition-colors">
+                    <Link href="/" className="text-gray-300 hover:text-white transition-colors">
                       Home
                     </Link>
                   </li>
                   <li>
-                    <Link href="/events" className="text-gray-600 hover:text-primary transition-colors">
+                    <Link href="/events" className="text-gray-300 hover:text-white transition-colors">
                       Events
                     </Link>
                   </li>
                   <li>
-                    <Link href="/gallery" className="text-gray-600 hover:text-primary transition-colors">
+                    <Link href="/gallery" className="text-gray-300 hover:text-white transition-colors">
                       Gallery
                     </Link>
                   </li>
                   <li>
-                    <Link href="/office-bearers" className="text-gray-600 hover:text-primary transition-colors">
+                    <Link href="/office-bearers" className="text-gray-300 hover:text-white transition-colors">
                       Office Bearers
                     </Link>
                   </li>
                   <li>
-                    <Link href="/register" className="text-gray-600 hover:text-primary transition-colors">
+                    <Link href="/register" className="text-gray-300 hover:text-white transition-colors">
                       Register
                     </Link>
                   </li>
@@ -440,20 +419,20 @@ export default async function HomePage() {
 
               {/* Contact */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact</h3>
+                <h3 className="text-lg font-semibold text-white mb-4">Contact</h3>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-sm text-gray-500 mb-1">Email:</p>
+                    <p className="text-sm text-gray-400 mb-1">Email:</p>
                     <a
                       href={`mailto:${settings.contact_email || "info@ycjchurch.org"}`}
-                      className="text-gray-700 hover:text-primary transition-colors"
+                      className="text-gray-300 hover:text-white transition-colors"
                     >
                       {settings.contact_email || "info@ycjchurch.org"}
                     </a>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500 mb-1">Location:</p>
-                    <p className="text-gray-700">
+                    <p className="text-sm text-gray-400 mb-1">Location:</p>
+                    <p className="text-gray-300">
                       {settings.contact_address_line1 || "CSI Christa Jyothi Church"}
                       {settings.contact_address_line2 && (
                         <>
@@ -465,10 +444,10 @@ export default async function HomePage() {
                   </div>
                   {settings.contact_phone && (
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Phone:</p>
+                      <p className="text-sm text-gray-400 mb-1">Phone:</p>
                       <a
                         href={`tel:${settings.contact_phone}`}
-                        className="text-gray-700 hover:text-primary transition-colors"
+                        className="text-gray-300 hover:text-white transition-colors"
                       >
                         {settings.contact_phone}
                       </a>
@@ -479,14 +458,14 @@ export default async function HomePage() {
 
               {/* Follow Us */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Follow Us</h3>
+                <h3 className="text-lg font-semibold text-white mb-4">Follow Us</h3>
                 <div className="flex flex-wrap gap-4">
                   {settings.social_facebook && (
                     <a
                       href={settings.social_facebook}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-600 hover:text-primary transition-colors"
+                      className="text-[#1877F2] hover:opacity-80 transition-opacity"
                       aria-label="Facebook"
                     >
                       <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -499,11 +478,18 @@ export default async function HomePage() {
                       href={settings.social_instagram}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-600 hover:text-primary transition-colors"
+                      className="hover:opacity-80 transition-opacity"
                       aria-label="Instagram"
                     >
-                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                      <svg className="w-6 h-6" viewBox="0 0 24 24">
+                        <defs>
+                          <linearGradient id="instagram-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" style={{ stopColor: '#FD5949', stopOpacity: 1 }} />
+                            <stop offset="50%" style={{ stopColor: '#D6249F', stopOpacity: 1 }} />
+                            <stop offset="100%" style={{ stopColor: '#285AEB', stopOpacity: 1 }} />
+                          </linearGradient>
+                        </defs>
+                        <path fill="url(#instagram-gradient)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                       </svg>
                     </a>
                   )}
@@ -512,7 +498,7 @@ export default async function HomePage() {
                       href={settings.social_youtube}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-600 hover:text-primary transition-colors"
+                      className="text-[#FF0000] hover:opacity-80 transition-opacity"
                       aria-label="YouTube"
                     >
                       <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -525,7 +511,7 @@ export default async function HomePage() {
                       href={settings.social_whatsapp}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-600 hover:text-primary transition-colors"
+                      className="text-[#25D366] hover:opacity-80 transition-opacity"
                       aria-label="WhatsApp"
                     >
                       <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -534,7 +520,7 @@ export default async function HomePage() {
                     </a>
                   )}
                   {(!settings.social_facebook && !settings.social_instagram && !settings.social_youtube && !settings.social_whatsapp) && (
-                    <p className="text-sm text-gray-500">Social media links will appear here</p>
+                    <p className="text-sm text-gray-400">Social media links will appear here</p>
                   )}
                 </div>
               </div>
