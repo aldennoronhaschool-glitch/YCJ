@@ -22,13 +22,18 @@ interface GalleryFolder {
 
 async function getRecentGalleryFoldersFromImageKit(limit: number = 6): Promise<GalleryFolder[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    // Use relative URL to work on both local and deployed environments
+    const baseUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000';
+
     const response = await fetch(`${baseUrl}/api/imagekit/recent-folders?limit=${limit}`, {
-      cache: 'no-store'
+      cache: 'no-store',
+      next: { revalidate: 0 }
     });
 
     if (!response.ok) {
-      console.error('Failed to fetch gallery folders from ImageKit');
+      console.error('Failed to fetch gallery folders from ImageKit:', response.status, response.statusText);
       return [];
     }
 
