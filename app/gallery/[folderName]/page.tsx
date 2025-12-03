@@ -4,18 +4,19 @@ import { Navbar } from "@/components/navbar";
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
-    params: {
+    params: Promise<{
         folderName: string;
-    };
+    }>;
 }
 
 export default async function GalleryFolderPage({ params }: PageProps) {
-    const folderName = decodeURIComponent(params.folderName);
+    const { folderName } = await params;
+    const decodedFolderName = decodeURIComponent(folderName);
 
     return (
         <>
             <Navbar />
-            <GalleryFolderView folderName={folderName} />
+            <GalleryFolderView folderName={decodedFolderName} />
         </>
     );
 }
